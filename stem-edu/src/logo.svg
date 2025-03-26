@@ -1,0 +1,12 @@
+<svg width="220" height="60" viewBox="0 0 220 60" xmlns="http://www.w3.org/2000/svg">
+    <!-- Background Circle -->
+    <circle cx="30" cy="30" r="25" fill="#ff9800" stroke="#ff5722" stroke-width="4"/>
+    
+    <!-- Letter "S" inside the circle -->
+    <text x="20" y="40" font-family="Arial" font-size="32" fill="white" font-weight="bold">S</text>
+    
+    <!-- Website Name -->
+    <text x="65" y="38" font-family="Arial" font-size="26" fill="#ff5722" font-weight="bold">
+        STEMedu
+    </text>
+</svg>
