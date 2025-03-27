@@ -9,15 +9,13 @@ import { AuthContext } from '../context/AuthContext';
 const Navbar = () => {
   const navigate = useNavigate();
 
-  const { isAuthenticated } = useContext(AuthContext);
-
+  const { isAuthenticated ,setIsAuthenticated} = useContext(AuthContext);
+ 
   const handleLogout = () => {
     localStorage.removeItem("authToken");
-    localStorage.removeItem("userId");
-    localStorage.removeItem("name");
+    setIsAuthenticated(false);
     navigate("/login");
   };
-
   return (
     <AppBar position="fixed" sx={{ backgroundColor: "#0D0D2B", zIndex: 1201, fontFamily: "Roboto" }}>
       <Toolbar sx={{ display: "flex", justifyContent: "space-between", paddingY: 1 }}>
