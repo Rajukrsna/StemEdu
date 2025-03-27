@@ -25,7 +25,7 @@ useEffect(() => {
 return (
   <Container sx={{ padding: "40px", borderRadius: "16px" }}>
     <Typography variant="h4" textAlign="center" gutterBottom>
-      Virtual Labs
+   ALL Virtual Labs in one Place
     </Typography>
     <Grid container spacing={3} justifyContent="center">
       {experiments.map((exp, index) => (

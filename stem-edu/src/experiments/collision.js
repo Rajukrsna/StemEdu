@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import Matter from "matter-js";
-import { Box, Card, CardContent, Typography, Slider, Grid, Button } from "@mui/material";
+import { Box, Card, CardContent, Typography, Slider, Grid } from "@mui/material";
 import EndExperimentButton from "../components/EndExperiment";  
 const CollisionExperiment = () => {
   const sceneRef = useRef(null);
@@ -95,7 +95,6 @@ const experimentName= "Collision"
 
   const handleMarkComplete = () => {
     setIsCompleted(true);
-    alert(`Lab marked as completed! You spent ${timeSpent} seconds in the lab.`);
   };
 
   return (
@@ -180,6 +179,7 @@ const experimentName= "Collision"
                 experimentName={experimentName}
                 timeSpent={timeSpent}
                 route="/collision"
+                track="physics"
                 onEnd={handleMarkComplete}
               />
             </Box>

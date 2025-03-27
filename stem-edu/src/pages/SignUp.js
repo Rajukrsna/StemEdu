@@ -18,7 +18,7 @@ import ColorModeSelect from '../theme/ColorModeSelect';
 import { GoogleIcon, FacebookIcon, SitemarkIcon } from '../components/CustomIcons';
 import { useNavigate } from "react-router-dom";
 import axios from "axios"; // ✅ Import axios 
-const backendUrl = process.env.REACT_APP_BACKEND_URL;
+//const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: 'flex',

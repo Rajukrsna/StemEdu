@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Box, Typography, Button, Grid, Card, CardContent, Chip, LinearProgress } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-
+import axios from "axios";  
 const tracks = [
   { name: "maths", title: "Mathematics Mastery", description: "Learn advanced mathematical concepts with problem-solving techniques.", progress: 0, status:"Inprogress" },
   { name: "physics", title: "Physics Fundamentals", description: "Explore Newton's laws, quantum physics, and thermodynamics.", progress: 0,status:"nil" },
@@ -10,12 +10,26 @@ const tracks = [
   { name: "computer-science", title: "CS & Programming", description: "Master algorithms, data structures, and software engineering.", progress: 0,status:"nil" },
   { name: "engineering", title: "Engineering Concepts", description: "Cover mechanics, electronics, and civil engineering basics.", progress: 0 ,status:"nil"},
 ];
-
+const userId= localStorage.getItem("userId"); 
 const categories = ["All", "Maths", "Physics", "Chemistry", "Biology", "Computer Science", "Engineering"];
-
 const Tracks = () => {
-  const navigate = useNavigate();
+  const [trackProgress, setTrackProgress] = useState([]); 
   const [selectedCategory, setSelectedCategory] = useState("All");
+  const navigate = useNavigate();
+  useEffect(() => {
+    const  RetrieveProgress = async () => {
+      try{
+        const response = await axios.get(`http://localhost:5000/api/progress/${userId}`);
+        console.log(response.data);
+        setTrackProgress(response.data[0]);
+      }
+      catch (error) {
+        console.error("Error fetching latest experiment:", error);
+        alert("Failed to fetch latest experiment. Please try again.");
+      }
+    }
+    RetrieveProgress();
+  },[]);
 
   const filteredTracks = selectedCategory === "All"
     ? tracks
@@ -67,14 +81,21 @@ const Tracks = () => {
                 {/* Tags */}
                 <Box sx={{ mt: 2 }}>
                   <Chip label="Fundamentals" color="secondary" size="small" sx={{ mr: 1 }} />
-                  <Chip label="📜 15 Points" color="warning" size="small" />
+                  <Chip label="📜 2500 Xps" color="warning" size="small" />
                 </Box>
 
                 {/* Progress Bar */}
                 <Box sx={{ mt: 2, display: "flex", alignItems: "center", gap: 1 }}>
-                  <LinearProgress variant="determinate" value={track.progress} sx={{ flexGrow: 1, height: 8, borderRadius: 2 }} />
-                  <Typography variant="body2">{track.progress}%</Typography>
-                </Box>
+  {/* Calculate progress percentage dynamically */}
+  <LinearProgress
+    variant="determinate"
+    value={(trackProgress?.xp?.[track.name] / 2500) * 100} 
+    sx={{ flexGrow: 1, height: 8, borderRadius: 2 }} 
+  />
+  <Typography variant="body2">
+    {Math.min(((trackProgress?.xp?.[track.name] || 0) / 200) * 100, 100).toFixed(1)}%
+  </Typography>
+</Box>
 
                 {/* Action Button */}
                 <Button

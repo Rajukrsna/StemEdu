@@ -5,6 +5,12 @@ const UserSchema = new mongoose.Schema({
   name: String,
   email: { type: String, unique: true },
   password: String,
+  xp: {
+    physics: { type: Number, default: 0 },
+    chemistry: { type: Number, default: 0 },
+    biology: { type: Number, default: 0 },
+    maths: { type: Number, default: 0 }
+  }
 });
 
 UserSchema.pre("save", async function (next) {

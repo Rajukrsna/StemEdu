@@ -1,8 +1,8 @@
 import { Typography, Button } from "@mui/material";
 import { Link } from "react-router-dom";
 import { styled } from "@mui/system";
-import STEM from "../assets/STEM1.png";  
-import BackgroundImage from "../assets/Back.jpg";  // Replace with your actual background image
+const STEM = "/assets/STEM1.png";  
+const BackgroundImage = "/assets/Back.jpg"; // Assuming it's in public/assets
 
 const HeroContainer = styled("div")({
   position: "relative",

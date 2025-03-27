@@ -17,10 +17,12 @@ import Leaderboard from "./pages/LeaderBoard";
 import SignInSide from "./pages/SignInSide";  
 import SignUp from "./pages/SignUp";  
 import ProtectedRoute from "./components/ProtectedRoute"; 
-import Experiment from "./pages/Experiment1";
-import CollisionExperiment from "./pages/collision";
-import Pendulum from "./pages/Pendulum";   
-import Inclined from "./pages/Inclined";     
+import Experiment from "./experiments/Experiment1";
+import CollisionExperiment from "./experiments/collision";
+import Pendulum from "./experiments/Pendulum";   
+import Inclined from "./experiments/Inclined";     
+import Torque from "./experiments/Torque";
+import Projectile from "./experiments/Projectile";  
 const App = () => {
   return (
     <Router>
@@ -30,7 +32,7 @@ const App = () => {
 };
 const MainLayout = () => {
   const location = useLocation();
-  const showSidebar = ["/learn", "/labs","/leaderboard", "/assesment", "/tracks", "/progress", "/collision", "/experiment"].some((path) =>
+  const showSidebar = ["/learn", "/labs","/torque","/projectile","/track/physics","/pendulum","/inclined","/leaderboard", "/assesment", "/tracks", "/progress", "/collision", "/experiment"].some((path) =>
     location.pathname.startsWith(path)
   );
 
@@ -94,6 +96,8 @@ const MainLayout = () => {
                     <Route path="/collision" element={<CollisionExperiment />} />
                     <Route path="/pendulum" element={<Pendulum />} />
                     <Route path="/inclined" element={<Inclined />} /> 
+                     <Route path="/torque" element={ <Torque />} />  
+                     <Route path="/projectile" element={<Projectile />} />  
 
                   </Routes>
                 </div>

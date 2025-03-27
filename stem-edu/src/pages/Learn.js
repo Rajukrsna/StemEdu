@@ -3,7 +3,7 @@ import ScienceIcon from "@mui/icons-material/Science";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import ComputerIcon from "@mui/icons-material/Computer";
 import SchoolIcon from "@mui/icons-material/School";
-import Back from "../assets/Back.jpg";
+const Back = "/assets/Back.jpg";
 const name = localStorage.getItem("name");
 const features = [
   {

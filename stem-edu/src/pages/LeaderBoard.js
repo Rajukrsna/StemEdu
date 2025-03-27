@@ -1,6 +1,7 @@
-import React from "react";
-import { Box, Card, Stack, Grid, Typography, LinearProgress } from "@mui/material";
+import React, { useEffect, useState } from "react";
+import { Box, Card, Stack, Grid, Typography, LinearProgress, Tooltip } from "@mui/material";
 import { CheckCircle } from "@mui/icons-material";
+import axios from "axios";
 
 const badges = [
   { name: "Bronze", points: 0, icon: "🥉" },
@@ -15,19 +16,48 @@ const badges = [
   { name: "Opal", points: 2500, icon: "🏆" },
 ];
 
-const data = {
-  points: 1800,
-  classRank: 3,
-  yearRank: 128,
-  leaderboard: [
-    { name: "Minou", score: 1000 },
-    { name: "PERSON4", score: 950 },
-    { name: "Priyanshu", score: 912 },
-    { name: "PravinRaju", score: 880 },
-  ],
-};
+const userId = localStorage.getItem("userId");
 
 const Dashboard = () => {
+  const [userData, setUserData] = useState(null); 
+  const [allUserData, setAllUserData] = useState([]); 
+  const [totalXp, setTotalXp] = useState(0);
+
+  useEffect(() => { 
+    const getUsers = async () => {
+      try {
+        const response = await axios.get(`http://localhost:5000/api/getUsers`);
+        setAllUserData(response.data);
+      } catch (error) { 
+        console.error("Error fetching users:", error);
+      }
+    };
+    getUsers();
+  }, []);
+
+  useEffect(() => {
+    const retrieveProgress = async () => {
+      try {
+        const response = await axios.get(`http://localhost:5000/api/progress/${userId}`);
+        const user = response.data[0];
+        setUserData(user);
+        const userXp = user?.xp || {};
+        const total = Object.values(userXp).reduce((sum, value) => sum + value, 0);
+        setTotalXp(total);
+      } catch (error) {
+        console.error("Failed to fetch progress:", error);
+      }
+    };
+    retrieveProgress();
+  }, [userId]);
+
+  const leaderboard = allUserData
+    .map(user => ({
+      name: user.name,
+      xp: Object.values(user.xp || {}).reduce((sum, value) => sum + value, 0)
+    }))
+    .sort((a, b) => b.xp - a.xp);
+
   return (
     <Box sx={{ fontFamily: "Roboto", p: 3 }}>
       {/* Badges Section */}
@@ -50,18 +80,25 @@ const Dashboard = () => {
         <Box sx={{ position: "relative", mt: 2, width: "100%" }}>
           <LinearProgress
             variant="determinate"
-            value={(data.points / 2500) * 100}
+            value={(totalXp / 2500) * 100}
             sx={{ height: 10, borderRadius: 5, bgcolor: "#4a4a4a" }}
           />
           <Stack direction="row" justifyContent="space-between" sx={{ mt: -1 }}>
             {badges.map((badge, index) => (
-              <CheckCircle
-                key={index}
-                sx={{
-                  color: data.points >= badge.points ? "#d400ff" : "gray",
-                  fontSize: 20,
-                }}
-              />
+              <Tooltip 
+                key={index} 
+                title={`XP Needed: ${badge.points}`} 
+                arrow
+                placement="top"
+              >
+                <CheckCircle
+                  sx={{
+                    color: totalXp >= badge.points ? "#d400ff" : "gray",
+                    fontSize: 20,
+                    cursor: "pointer"
+                  }}
+                />
+              </Tooltip>
             ))}
           </Stack>
         </Box>
@@ -72,19 +109,19 @@ const Dashboard = () => {
         <Grid item xs={12} sm={4}>
           <Card sx={{ p: 2, textAlign: "center" }}>
             <Typography variant="h6">My Points</Typography>
-            <Typography variant="h4" color="success.main">{data.points}</Typography>
+            <Typography variant="h4" color="success.main">{totalXp}</Typography>
           </Card>
         </Grid>
         <Grid item xs={12} sm={4}>
           <Card sx={{ p: 2, textAlign: "center" }}>
             <Typography variant="h6">Class Rank</Typography>
-            <Typography variant="h4" color="primary">{data.classRank}rd</Typography>
+            <Typography variant="h4" color="primary">{userData?.classRank || "N/A"}</Typography>
           </Card>
         </Grid>
         <Grid item xs={12} sm={4}>
           <Card sx={{ p: 2, textAlign: "center" }}>
             <Typography variant="h6">Global Rank</Typography>
-            <Typography variant="h4" color="secondary">{data.yearRank}</Typography>
+            <Typography variant="h4" color="secondary">{userData?.yearRank || "N/A"}</Typography>
           </Card>
         </Grid>
       </Grid>
@@ -92,12 +129,22 @@ const Dashboard = () => {
       {/* Leaderboard Section */}
       <Typography variant="h5" mt={4} mb={2}>Leaderboard</Typography>
       <Card sx={{ p: 2 }}>
-        {data.leaderboard.map((player, index) => (
-          <Stack key={index} direction="row" justifyContent="space-between" py={1}>
-            <Typography variant="body1">{player.name}</Typography>
-            <Typography variant="body1" fontWeight="bold">{player.score}</Typography>
-          </Stack>
-        ))}
+        {leaderboard.length > 0 ? (
+          leaderboard.map((player, index) => (
+            <Stack key={index} direction="row" justifyContent="space-between" py={1}>
+              <Typography variant="body1">
+                {index + 1}. {player.name}
+              </Typography>
+              <Typography variant="body1" fontWeight="bold">
+                {player.xp}
+              </Typography>
+            </Stack>
+          ))
+        ) : (
+          <Typography variant="body1" textAlign="center">
+            No leaderboard data available
+          </Typography>
+        )}
       </Card>
     </Box>
   );
