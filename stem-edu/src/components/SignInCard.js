@@ -15,6 +15,9 @@ import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
 import ForgotPassword from './ForgotPassword';
 import { GoogleIcon, FacebookIcon } from './CustomIcons';
+import { useContext } from 'react';
+import { AuthContext } from '../context/AuthContext';
+
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: 'flex',
@@ -36,6 +39,7 @@ export default function SignInCard() {
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
   const [open, setOpen] = React.useState(false);
+  const { setIsAuthenticated } = useContext(AuthContext);
 
   const handleClickOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -48,7 +52,10 @@ export default function SignInCard() {
       if (response.data) {
         localStorage.setItem("authToken", response.data.token);
         localStorage.setItem("userId", response.data.userId);  // ✅ Store User ID
-        localStorage.setItem("name", response.data.name);  // ✅ Store User Name
+        localStorage.setItem("name", response.data.name);
+  // ✅ Store User Name
+  setIsAuthenticated(true); // ✅ Immediately update navbar
+
         navigate("/");
       }
     } catch (error) {

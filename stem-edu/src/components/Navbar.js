@@ -1,21 +1,20 @@
 import { AppBar, Toolbar, Typography, Button, InputBase, Box } from "@mui/material";
 import { Search, Home, School, Dashboard, Star, Login, HowToReg } from "@mui/icons-material";
 import { Link } from "react-router-dom";
-import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import logo from "../logo.svg"; // Adjust path if needed
+import { useContext } from 'react';
+import { AuthContext } from '../context/AuthContext';
 
 const Navbar = () => {
   const navigate = useNavigate();
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  useEffect(() => {
-    setIsAuthenticated(!!localStorage.getItem("authToken"));
-  }, []);
+  const { isAuthenticated } = useContext(AuthContext);
 
   const handleLogout = () => {
     localStorage.removeItem("authToken");
-    setIsAuthenticated(false);
+    localStorage.removeItem("userId");
+    localStorage.removeItem("name");
     navigate("/login");
   };
 
