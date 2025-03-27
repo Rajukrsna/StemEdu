@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { Box, Typography, Button, Grid, Card, CardContent, Chip, LinearProgress } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";  
+const backendUrl = process.env.REACT_APP_BACKEND_URL;
+
 const tracks = [
   { name: "maths", title: "Mathematics Mastery", description: "Learn advanced mathematical concepts with problem-solving techniques.", progress: 0, status:"Inprogress" },
   { name: "physics", title: "Physics Fundamentals", description: "Explore Newton's laws, quantum physics, and thermodynamics.", progress: 0,status:"nil" },
@@ -19,7 +21,7 @@ const Tracks = () => {
   useEffect(() => {
     const  RetrieveProgress = async () => {
       try{
-        const response = await axios.get(`http://localhost:5000/api/progress/${userId}`);
+        const response = await axios.get(`${backendUrl}/api/progress/${userId}`);
         console.log(response.data);
         setTrackProgress(response.data[0]);
       }

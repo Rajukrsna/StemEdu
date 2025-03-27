@@ -18,7 +18,7 @@ import ColorModeSelect from '../theme/ColorModeSelect';
 import { GoogleIcon, FacebookIcon, SitemarkIcon } from '../components/CustomIcons';
 import { useNavigate } from "react-router-dom";
 import axios from "axios"; // ✅ Import axios 
-//const backendUrl = process.env.REACT_APP_BACKEND_URL;
+const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: 'flex',
@@ -118,7 +118,7 @@ const [sellerData, setSellerData] = React.useState({ name: "", email: "", passwo
    // }
    event.preventDefault();
    try {
-    const response = await axios.post(`http://localhost:5000/authRoute/register`, {
+    const response = await axios.post(`${backendUrl}/authRoute/register`, {
       name: sellerData.name,
       email: sellerData.email,
       password: sellerData.password,

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Box, Card, Stack, Grid, Typography, LinearProgress, Tooltip } from "@mui/material";
 import { CheckCircle } from "@mui/icons-material";
 import axios from "axios";
+const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
 const badges = [
   { name: "Bronze", points: 0, icon: "🥉" },
@@ -26,7 +27,7 @@ const Dashboard = () => {
   useEffect(() => { 
     const getUsers = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/api/getUsers`);
+        const response = await axios.get(`${backendUrl}/api/getUsers`);
         setAllUserData(response.data);
       } catch (error) { 
         console.error("Error fetching users:", error);
@@ -38,7 +39,7 @@ const Dashboard = () => {
   useEffect(() => {
     const retrieveProgress = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/api/progress/${userId}`);
+        const response = await axios.get(`${backendUrl}/api/progress/${userId}`);
         const user = response.data[0];
         setUserData(user);
         const userXp = user?.xp || {};

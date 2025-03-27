@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Box, Typography, Grid, Card, CardContent, Button, CardMedia, CircularProgress } from "@mui/material";
 import axios from "axios";
+const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
 const TrackDetails = () => {
   const { trackName } = useParams();
@@ -11,7 +12,7 @@ const TrackDetails = () => {
   useEffect(() => {
     const fetchExperiments = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/experiments");
+        const response = await axios.get(`${backendUrl}/api/experiments`);
         setExperiments(response.data);
       } catch (error) {
         console.error("Error fetching experiments:", error);

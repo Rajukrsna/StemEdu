@@ -3,6 +3,7 @@ import { Button } from "@mui/material";
 import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
 const userId = localStorage.getItem("userId"); 
 const EndExperimentButton = ({ experimentName, timeSpent, route,track, onEnd }) => {
@@ -11,7 +12,7 @@ const EndExperimentButton = ({ experimentName, timeSpent, route,track, onEnd }) 
       
       let xp = timeSpent > 30 ? 45 : 0; // Define xp properly
         
-      await axios.post("http://localhost:5000/api/save-progress", {
+      await axios.post(`${backendUrl}/api/save-progress`, {
         experimentName,
         duration: timeSpent,
         route: route,

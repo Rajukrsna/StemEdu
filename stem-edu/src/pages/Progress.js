@@ -4,7 +4,8 @@ import { School, Assignment, Build, RocketLaunch } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom"; 
 import axios from "axios";
 import { useState } from "react"; 
-    
+const backendUrl = process.env.REACT_APP_BACKEND_URL;
+
 const labels = [
   { text: "Review", icon: <School fontSize="large" /> },
   { text: "Assess", icon: <Assignment fontSize="large" /> },
@@ -25,7 +26,7 @@ const Dashboard = () => {
   useEffect(() => { 
       const  Retrievelab = async () => {
         try{
-          const response = await axios.get(`http://localhost:5000/api/latest/${userId}`);
+          const response = await axios.get(`${backendUrl}/api/latest/${userId}`);
           //console.log(response.data);
           SetCompletedLab(response.data);
         }
@@ -43,7 +44,7 @@ const Dashboard = () => {
 useEffect(() => { 
   const LatestRetrieve = async () => {  
     try{
-      const response = await axios.get(`http://localhost:5000/api/glatest/${userId}`);
+      const response = await axios.get(`${backendUrl}/api/glatest/${userId}`);
       console.log(response.data);
       setLatestLab(response.data[0])
     }
@@ -60,7 +61,7 @@ useEffect(() => {
   
   const progress = async () => {
     try {
-      const response = await axios.get(`http://localhost:5000/api/progress/${userId}`);  
+      const response = await axios.get(`${backendUrl}/api/progress/${userId}`);  
       console.log(response.data);
        
       const userXp = response.data[0]?.xp || {}; // Ensure xp exists

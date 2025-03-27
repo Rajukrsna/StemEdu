@@ -6,10 +6,10 @@ const app = express();
 dotenv.config();
 connectDB();
 
-
+const frontendUrl = process.env.FRONTEND_URL || "http://localhost:3000";
 
 app.use(cors({
-    origin:"http://localhost:3000", // ✅ Allow the frontend to connect to this server
+    origin:frontendUrl, // ✅ Allow the frontend to connect to this server
     credentials: true, // ✅ Allow cookies & authentication headers
     // Adjust if frontend is on a different port
     methods: ["GET", "POST"],

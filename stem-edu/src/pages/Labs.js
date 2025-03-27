@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Grid, Card, CardContent, CardMedia, Typography, Button, Container } from "@mui/material";
 import axios from "axios";  
 import { useEffect, useState } from "react";  
+const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
 const Labs = () => {
   const navigate = useNavigate();
@@ -11,7 +12,7 @@ const [experiments, setExperiments] = useState([])
 useEffect(() => {
   const fetchExperiments = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/api/experiments");
+      const response = await axios.get(`${backendUrl}/api/experiments`);
       setExperiments(response.data);
     } catch (error) {
       console.error("Error fetching experiments:", error);
