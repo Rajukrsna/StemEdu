@@ -1,7 +1,12 @@
-**📚 BrightMindsSTEM**
+![image](https://github.com/user-attachments/assets/1c84bd1b-6425-453d-a46e-325730eb3190)**📚 BrightMindsSTEM**
 ----------------------
 
 🚀 **An interactive virtual STEM learning platform with hands-on labs, flashcards, and gamification.**
+
+# BrightMindsSTEM 🌟
+
+![BrightMindsSTEM Website](https://raw.githubusercontent.com/rajukrsna/stemedu/main/stempic1.png)
+
 
 ### **🔗 Live Demo**
 
