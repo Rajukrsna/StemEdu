@@ -26,10 +26,10 @@ ComponentTechnology**Frontend**React.js, Vercel**Backend**Node.js, Express.js, R
 
 ### **1️⃣ Clone the Repository**
 
-bash
-
-`git clone https://github.com/your-username/BrightMindsSTEM.git
+```bash
+git clone https://github.com/Rajukrsna/StemEdu.git
 cd BrightMindsSTEM`
+```
 
 ### **2️⃣ Install Dependencies**
 
@@ -42,23 +42,20 @@ npm start
 ```
 #### **Backend:**
 
-bash
-
+```bash
 `cd backend
 npm install
 npm start`
-
+```
 ### **3️⃣ Set Up Environment Variables**
 
 Create a `.env` file in the backend directory with:
 
-bash
-
-
-`MONGO_URI=your_mongodb_connection
+```bash
+MONGO_URI=your_mongodb_connection
 JWT_SECRET=your_secret_key
 FRONTEND_URL=http://localhost:3000`
-
+```
 
 **📌 API Endpoints**
 --------------------
