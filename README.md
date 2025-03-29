@@ -9,7 +9,7 @@
 
 ## 📝 Features  
 ✅ **Virtual STEM Labs** – Hands-on simulations for Math, Physics, Chemistry, Biology, and CS using Matter.js  
-✅ **Gamification System** – Earn XP, rank up (Bronze → Silver → Gold), and compete on a leaderboard  
+✅ **Gamification System** – Earn XP, rank up (Bronze → Silver → Gold->>>>>), and compete on a leaderboard  
 ✅ **Flashcards & Assessments** – Reinforce learning and track progress  
 ✅ **Progress Tracking** – Saves student performance for educators to assess  
 ✅ **Intuitive UI** – Built with React.js for seamless navigation  
@@ -22,8 +22,6 @@
 | **Backend**       | Node.js, Express.js, Render       |
 | **Database**      | MongoDB (or any other used)       |
 | **Simulations**   | Matter.js                         |
-| **State Management** | Redux / Context API (if applicable) |
-
 
 **🚀 Getting Started**
 ----------------------
