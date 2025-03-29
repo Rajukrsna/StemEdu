@@ -7,19 +7,23 @@
 
 🔹 URL: [BrightMindsSTEM on Vercel](https://stem-edu.vercel.app)
 
-**📝 Features**
----------------
+## 📝 Features  
+✅ **Virtual STEM Labs** – Hands-on simulations for Math, Physics, Chemistry, Biology, and CS using Matter.js  
+✅ **Gamification System** – Earn XP, rank up (Bronze → Silver → Gold), and compete on a leaderboard  
+✅ **Flashcards & Assessments** – Reinforce learning and track progress  
+✅ **Progress Tracking** – Saves student performance for educators to assess  
+✅ **Intuitive UI** – Built with React.js for seamless navigation  
 
-✅ **Virtual STEM Labs** – Hands-on simulations for **Math, Physics, Chemistry, Biology, and CS** using **Matter.js**
-✅ **Gamification System** – Earn **XP**, rank up (**Bronze → Silver → Gold**), and compete on a **leaderboard**
-✅ **Flashcards & Assessments** – Reinforce learning and track progress
-✅ **Progress Tracking** – Saves student performance for educators to assess
-✅ **Intuitive UI** – Built with **React.js** for seamless navigation
+## 🛠 Tech Stack  
 
-**🛠 Tech Stack**
------------------
+| **Component**      | **Technology**                     |
+|--------------------|-----------------------------------|
+| **Frontend**      | React.js, Vercel                  |
+| **Backend**       | Node.js, Express.js, Render       |
+| **Database**      | MongoDB (or any other used)       |
+| **Simulations**   | Matter.js                         |
+| **State Management** | Redux / Context API (if applicable) |
 
-ComponentTechnology**Frontend**React.js, Vercel**Backend**Node.js, Express.js, Render**Database**MongoDB (or any other used)**Simulations**Matter.js**State Management**Redux / Context API (if applicable)
 
 **🚀 Getting Started**
 ----------------------
@@ -28,7 +32,7 @@ ComponentTechnology**Frontend**React.js, Vercel**Backend**Node.js, Express.js, R
 
 ```bash
 git clone https://github.com/Rajukrsna/StemEdu.git
-cd BrightMindsSTEM`
+cd BrightMindsSTEM
 ```
 
 ### **2️⃣ Install Dependencies**
@@ -43,9 +47,9 @@ npm start
 #### **Backend:**
 
 ```bash
-`cd backend
+cd backend
 npm install
-npm start`
+npm start
 ```
 ### **3️⃣ Set Up Environment Variables**
 
