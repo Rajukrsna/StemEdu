@@ -94,9 +94,9 @@ export default function SignInCard() {
       </Box>
       <Divider sx={{ my: 2 }} />
       <Box sx={{ textAlign: 'center' }}>
-        <Typography variant="body2" sx={{ mb: 1 }}>Government Official?</Typography>
+        <Typography variant="body2" sx={{ mb: 1 }}>Teacher?</Typography>
         <Button variant="outlined" color="secondary" onClick={() => navigate("/gov-login")}>
-          Login as Authority
+          Login as Teacher
         </Button>
       </Box>
     </Card>
