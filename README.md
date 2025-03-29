@@ -1,0 +1,82 @@
+**📚 BrightMindsSTEM**
+----------------------
+
+🚀 **An interactive virtual STEM learning platform with hands-on labs, flashcards, and gamification.**
+
+### **🔗 Live Demo**
+
+🔹 URL: [BrightMindsSTEM on Vercel](https://stem-edu.vercel.app)
+
+**📝 Features**
+---------------
+
+✅ **Virtual STEM Labs** – Hands-on simulations for **Math, Physics, Chemistry, Biology, and CS** using **Matter.js**✅ **Gamification System** – Earn **XP**, rank up (**Bronze → Silver → Gold**), and compete on a **leaderboard**✅ **Flashcards & Assessments** – Reinforce learning and track progress✅ **Progress Tracking** – Saves student performance for educators to assess✅ **Intuitive UI** – Built with **React.js** for seamless navigation
+
+**🛠 Tech Stack**
+-----------------
+
+ComponentTechnology**Frontend**React.js, Vercel**Backend**Node.js, Express.js, Render**Database**MongoDB (or any other used)**Simulations**Matter.js**State Management**Redux / Context API (if applicable)
+
+**🚀 Getting Started**
+----------------------
+
+### **1️⃣ Clone the Repository**
+
+Plain textANTLR4BashCC#CSSCoffeeScriptCMakeDartDjangoDockerEJSErlangGitGoGraphQLGroovyHTMLJavaJavaScriptJSONJSXKotlinLaTeXLessLuaMakefileMarkdownMATLABMarkupObjective-CPerlPHPPowerShell.propertiesProtocol BuffersPythonRRubySass (Sass)Sass (Scss)SchemeSQLShellSwiftSVGTSXTypeScriptWebAssemblyYAMLXML`   git clone https://github.com/your-username/BrightMindsSTEM.git  cd BrightMindsSTEM   `
+
+### **2️⃣ Install Dependencies**
+
+#### **Frontend:**
+
+Plain textANTLR4BashCC#CSSCoffeeScriptCMakeDartDjangoDockerEJSErlangGitGoGraphQLGroovyHTMLJavaJavaScriptJSONJSXKotlinLaTeXLessLuaMakefileMarkdownMATLABMarkupObjective-CPerlPHPPowerShell.propertiesProtocol BuffersPythonRRubySass (Sass)Sass (Scss)SchemeSQLShellSwiftSVGTSXTypeScriptWebAssemblyYAMLXML`   cd frontend  npm install  npm start   `
+
+#### **Backend:**
+
+Plain textANTLR4BashCC#CSSCoffeeScriptCMakeDartDjangoDockerEJSErlangGitGoGraphQLGroovyHTMLJavaJavaScriptJSONJSXKotlinLaTeXLessLuaMakefileMarkdownMATLABMarkupObjective-CPerlPHPPowerShell.propertiesProtocol BuffersPythonRRubySass (Sass)Sass (Scss)SchemeSQLShellSwiftSVGTSXTypeScriptWebAssemblyYAMLXML`   cd backend  npm install  npm start   `
+
+### **3️⃣ Set Up Environment Variables**
+
+Create a .env file in the backend directory with:
+
+Plain textANTLR4BashCC#CSSCoffeeScriptCMakeDartDjangoDockerEJSErlangGitGoGraphQLGroovyHTMLJavaJavaScriptJSONJSXKotlinLaTeXLessLuaMakefileMarkdownMATLABMarkupObjective-CPerlPHPPowerShell.propertiesProtocol BuffersPythonRRubySass (Sass)Sass (Scss)SchemeSQLShellSwiftSVGTSXTypeScriptWebAssemblyYAMLXML`   MONGO_URI=your_mongodb_connection  JWT_SECRET=your_secret_key  FRONTEND_URL=http://localhost:3000   `
+
+**📌 API Endpoints**
+--------------------
+
+### **🔐 Authentication Routes**
+
+MethodEndpointDescription**POST**/authRoute/registerRegister a new user**POST**/authRoute/loginLog in a user**GET**/authRoute/meGet logged-in user details
+
+### **🧪 Experiment Routes**
+
+MethodEndpointDescription**GET**/api/experimentsFetch all experiments from the database**GET**/api/glatest/:idGet the latest experiment a user has performed**GET**/api/latest/:idFetch all experiments a user has performed**POST**/api/save-progressSave the latest experiment performed by the user
+
+### **📊 Progress & Leaderboard Routes**
+
+MethodEndpointDescription**GET**/api/progress/:idFetch user progress data**GET**/api/getUsersGet all users on the platform (for leaderboard)**POST**/api/saveAssesmentSave XP gained from assessments
+
+**💡 Contribution Guide**
+-------------------------
+
+We welcome contributions! To contribute:
+
+1.  Fork the repository
+    
+2.  Create a new branch (git checkout -b feature-name)
+    
+3.  Commit your changes (git commit -m "Added new feature")
+    
+4.  Push to your branch (git push origin feature-name)
+    
+5.  Open a **Pull Request**
+    
+
+**📜 License**
+--------------
+
+This project is licensed under the **MIT License**.
+
+**📞 Contact**
+--------------
+
+For any queries open an issue on GitHub.
