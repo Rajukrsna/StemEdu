@@ -39,7 +39,7 @@ cd BrightMindsSTEM`
 cd frontend  
 npm install  
 npm start 
-
+```
 #### **Backend:**
 
 bash
