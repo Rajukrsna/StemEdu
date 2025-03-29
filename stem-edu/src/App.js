@@ -25,6 +25,7 @@ import Projectile from "./experiments/Projectile";
 import WrekingBall from "./experiments/WrekingBall";
 import Newton from "./experiments/Newton";
 import Place from "./experiments/PlaceValue";
+import Calci from "./components/Calci";
 const App = () => {
   return (
     <Router>
@@ -103,6 +104,7 @@ const MainLayout = () => {
                      <Route path="/wrekingball" element={<WrekingBall />} />
                      <Route path="/newton" element={<Newton />} />
                      <Route path="/place" element={<Place />} />
+                     <Route path="/dashboard" element={<Calci />} />
                     
                   </Routes>
                 </div>
