@@ -6,7 +6,7 @@
 
 ![BrightMindsSTEM Website](https://raw.githubusercontent.com/rajukrsna/stemedu/main/uploads/stempics.png)
 ![BrightMindsSTEM Website](https://raw.githubusercontent.com/rajukrsna/stemedu/main/uploads/stempic4.png)
-![BrightMindsSTEM Website](https://raw.githubusercontent.com/rajukrsna/stemedu/main/uploads/stempics7.png)
+![BrightMindsSTEM Website](https://raw.githubusercontent.com/rajukrsna/stemedu/main/uploads/stempic7.png)
 
 
 ### **🔗 Live Demo**
