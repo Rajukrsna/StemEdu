@@ -2,9 +2,13 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Box, Typography, Grid, Card, CardContent, Button, CardMedia, CircularProgress } from "@mui/material";
 import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { useNavigate } from "react-router-dom";
 const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
 const TrackDetails = () => {
+  const navigate = useNavigate();
   const { trackName } = useParams();
   const [experiments, setExperiments] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -22,6 +26,18 @@ const TrackDetails = () => {
     };
     fetchExperiments();
   }, []);
+
+  const handleDisabledClick = () => {
+    toast.warn("This experiment is under construction!", {
+      position: "top-center",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      theme: "colored",
+    });
+  };
 
   const filteredExperiments = experiments.filter((exp) => exp.track === trackName);
 
@@ -67,22 +83,28 @@ const TrackDetails = () => {
                     {exp.description}
                   </Typography>
                   <Button
-                    variant="contained"
-                    sx={{
-                      mt: 2,
-                      background: "#1976d2",
-                      "&:hover": { background: "#1565c0" },
-                    }}
-                    href={exp.route}
-                  >
-                    Start Experiment
-                  </Button>
+  variant="contained"
+  sx={{
+    mt: 2,
+    background: exp.route.includes("experiment") ? "gray" : "#1976d2",
+    "&:hover": { background: exp.route.includes("experiment") ? "gray" : "#1565c0" },
+    cursor: exp.route.includes("experiment") ? "not-allowed" : "pointer",
+  }}
+  onClick={exp.route.includes("experiment") ? handleDisabledClick :()=> navigate(exp.route) }
+>
+  {exp.route.includes("experiment") ? "Under Construction" : "Start Experiment"}
+</Button>
+
+
                 </CardContent>
               </Card>
             </Grid>
           ))}
         </Grid>
       )}
+
+      {/* React Toastify Container */}
+      <ToastContainer />
     </Box>
   );
 };

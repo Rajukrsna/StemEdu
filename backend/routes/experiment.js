@@ -85,6 +85,23 @@ await user.save();
     }
   });
 
+  router.post("/saveAssesment", async (req, res) => {
+       try{
+        console.log("entered save assessment")
+        const {userId, track} = req.body;
+        console.log(userId, track)
+        const user = await User.findOne({ _id: userId }); // Use `findOne`, not `find`
+        user.xp[track] += 10;
+        console.log(user)
+         await user.save();
+         res.json({message: "XP updated successfully"});  
+
+       }
+        catch(err){
+          res.status(500).json({error: "Failed to update XP"});
+        }
+  })
+
   
 
   module.exports = router;

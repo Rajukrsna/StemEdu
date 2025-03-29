@@ -1,11 +1,15 @@
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Box, Container, Grid, Card, CardContent, Typography, Button } from "@mui/material";
 import ScienceIcon from "@mui/icons-material/Science";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import ComputerIcon from "@mui/icons-material/Computer";
 import SchoolIcon from "@mui/icons-material/School";
+import LeaderboardIcon from "@mui/icons-material/Leaderboard";
+import TrackChangesIcon from "@mui/icons-material/TrackChanges";
+
 const Back = "/assets/Back.jpg";
 
-const name = localStorage.getItem("name");
 const features = [
   {
     title: "Explore Labs",
@@ -18,36 +22,70 @@ const features = [
     icon: <AssignmentIcon sx={{ fontSize: 50, color: "secondary.main" }} />,
   },
   {
-    title: "Progress and Statistics",
-    description: "Compete agains your fellow learners and view you progress.",
-    icon: <ComputerIcon sx={{ fontSize: 50, color: "success.main" }} />,
+    title: "Compete on Leaderboard",
+    description: "Challenge peers and rank on the leaderboard.",
+    icon: <LeaderboardIcon sx={{ fontSize: 50, color: "error.main" }} />,
+  },
+  {
+    title: "Track Your Progress",
+    description: "Monitor your learning journey and achievements.",
+    icon: <TrackChangesIcon sx={{ fontSize: 50, color: "success.main" }} />,
   },
 ];
 
-const Learn = () => {
+const LandingPage = () => {
+  const navigate = useNavigate();
+  const [name, setName] = useState("Learner");
+
+  // Fetch name from localStorage when component mounts
+  useEffect(() => {
+    const storedName = localStorage.getItem("name");
+    if (storedName) {
+      setName(storedName);
+    }
+  }, []);
+
   return (
     <Box
       sx={{
-        height: "100vh",
+        minHeight: "100vh",
         display: "flex",
-        alignItems: "center",
+        flexDirection: "column",
         justifyContent: "center",
         backgroundImage: `url(${Back})`,
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
         padding: 4,
+        color: "white",
+        textAlign: "center",
       }}
     >
+      {/* Hero Section */}
       <Container maxWidth="lg">
-        <Typography variant="h3" textAlign="center" fontWeight="bold" gutterBottom color="black">
-          <SchoolIcon sx={{ fontSize: 40, verticalAlign: "middle" }} /> Welcome {name} 
+        <Typography variant="h2" fontWeight="bold" gutterBottom>
+          <SchoolIcon sx={{ fontSize: 50, verticalAlign: "middle" }} /> Welcome, {name}!
         </Typography>
-        
+        <Typography variant="h5" fontWeight="medium" gutterBottom>
+          Unlock the world of STEM with hands-on experiments, assessments, and real-time progress tracking.
+        </Typography>
+
+        <Box mt={3}>
+          <Button variant="contained" onClick={() => navigate("/tracks")} color="primary" size="large" sx={{ mx: 1 }}>
+            Get Started
+          </Button>
+          <Button variant="outlined" color="secondary" size="large" sx={{ mx: 1 }}>
+            Learn More
+          </Button>
+        </Box>
+      </Container>
+
+      {/* Features Section */}
+      <Container maxWidth="lg" sx={{ mt: 6 }}>
         <Grid container spacing={3} justifyContent="center">
           {features.map((feature, index) => (
-            <Grid item xs={12} sm={6} md={4} key={index}>
-              <Card sx={{ textAlign: "center", padding: 3, boxShadow: 3, borderRadius: 4 }}>
+            <Grid item xs={12} sm={6} md={3} key={index}>
+              <Card sx={{ textAlign: "center", padding: 3, boxShadow: 4, borderRadius: 4, bgcolor: "white" }}>
                 <CardContent>
                   {feature.icon}
                   <Typography variant="h6" fontWeight="bold" gutterBottom>
@@ -61,15 +99,9 @@ const Learn = () => {
             </Grid>
           ))}
         </Grid>
-        
-        <Box textAlign="center" mt={4}>
-          <Button variant="contained" color="primary" size="large">
-            Start Learning
-          </Button>
-        </Box>
       </Container>
     </Box>
   );
 };
 
-export default Learn;
+export default LandingPage;

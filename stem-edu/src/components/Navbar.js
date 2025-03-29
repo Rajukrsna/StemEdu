@@ -1,5 +1,5 @@
 import { AppBar, Toolbar, Typography, Button, InputBase, Box } from "@mui/material";
-import { Search, Home, School, Dashboard, Star, Login, HowToReg } from "@mui/icons-material";
+import { Search, Home, School, Star, Login, HowToReg } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import logo from "../logo.svg"; // Adjust path if needed
@@ -22,7 +22,7 @@ const Navbar = () => {
         
         {/* Logo */}
         <Box component={Link} to="/" sx={{ display: "flex", alignItems: "center", textDecoration: "none", gap: 1 }}>
-          <img src={logo} alt="STEMhacks Logo" style={{ height: 40 }} />
+          <img src={logo} alt="STEMhacks Logo" style={{ height: 50 }} />
           <Typography variant="h6" sx={{ color: "#fff", fontWeight: "bold" }}>
           
           </Typography>
@@ -53,9 +53,7 @@ const Navbar = () => {
             <Button color="inherit" component={Link} to="/learn" startIcon={<School />} sx={{ fontFamily: "Roboto" }}>
               Learn
             </Button>
-            <Button color="inherit" component={Link} to="/dashboard" startIcon={<Dashboard />} sx={{ fontFamily: "Roboto" }}>
-              Dashboard
-            </Button>
+            
             <Button
               variant="contained"
               color="primary"

@@ -2,7 +2,6 @@ import { BrowserRouter as Router, Routes, Route, useLocation } from "react-route
 import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
 import Learn from "./pages/Learn";
-import Dashboard from "./pages/Dashboard";
 import Sidebar from "./components/Sidebar";
 import Lab from "./pages/Labs";
 import Progress from "./pages/Progress";
@@ -23,6 +22,9 @@ import Pendulum from "./experiments/Pendulum";
 import Inclined from "./experiments/Inclined";     
 import Torque from "./experiments/Torque";
 import Projectile from "./experiments/Projectile";  
+import WrekingBall from "./experiments/WrekingBall";
+import Newton from "./experiments/Newton";
+import Place from "./experiments/PlaceValue";
 const App = () => {
   return (
     <Router>
@@ -32,7 +34,7 @@ const App = () => {
 };
 const MainLayout = () => {
   const location = useLocation();
-  const showSidebar = ["/learn", "/labs","/torque","/projectile","/track/physics","/pendulum","/inclined","/leaderboard", "/assesment", "/tracks", "/progress", "/collision", "/experiment"].some((path) =>
+  const showSidebar = ["/place","/track/chemistry","/track/biology","/track/maths","/learn","/newton","/measurement", "/experiment","/labs","/torque","/wrekingball","/projectile","/track/physics","/pendulum","/inclined","/leaderboard", "/assesment", "/tracks", "/progress", "/collision", "/experiment"].some((path) =>
     location.pathname.startsWith(path)
   );
 
@@ -55,6 +57,7 @@ const MainLayout = () => {
               <Route path="/" element={<Home />} />
               <Route path="/learn" element={ <Learn />} />
               <Route path="/login" element={<SignInSide />} />
+
 
             </Routes>
           ) : (
@@ -84,7 +87,6 @@ const MainLayout = () => {
               >
                 <div style={{ padding: "20px", marginTop: "64px" }}>
                   <Routes  element= {<ProtectedRoute />}>
-                    <Route path="/dashboard" element={<Dashboard />} />
                     <Route path="/register" element={<SignUp />} /> 
                     <Route path="/labs" element={<Lab />} />
                     <Route path="/progress" element={<Progress />} />
@@ -98,7 +100,10 @@ const MainLayout = () => {
                     <Route path="/inclined" element={<Inclined />} /> 
                      <Route path="/torque" element={ <Torque />} />  
                      <Route path="/projectile" element={<Projectile />} />  
-
+                     <Route path="/wrekingball" element={<WrekingBall />} />
+                     <Route path="/newton" element={<Newton />} />
+                     <Route path="/place" element={<Place />} />
+                    
                   </Routes>
                 </div>
               </Stack>

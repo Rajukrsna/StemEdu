@@ -5,7 +5,7 @@ import axios from "axios";
 const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
 const tracks = [
-  { name: "maths", title: "Mathematics Mastery", description: "Learn advanced mathematical concepts with problem-solving techniques.", progress: 0, status:"Inprogress" },
+  { name: "maths", title: "Mathematics Mastery", description: "Learn advanced mathematical concepts with problem-solving techniques.", progress: 0, status:"nil" },
   { name: "physics", title: "Physics Fundamentals", description: "Explore Newton's laws, quantum physics, and thermodynamics.", progress: 0,status:"nil" },
   { name: "chemistry", title: "Chemistry Essentials", description: "Dive into chemical reactions, periodic table, and lab techniques.", progress: 0 ,status:"nil"},
   { name: "biology", title: "Biology Insights", description: "Understand genetics, human anatomy, and ecology.", progress: 0,status:"nil" },

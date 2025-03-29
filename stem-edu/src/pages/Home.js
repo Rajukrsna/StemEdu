@@ -1,32 +1,34 @@
-import { Typography, Button } from "@mui/material";
+import { Typography, Button, Card, CardContent, Grid, Container } from "@mui/material";
 import { Link } from "react-router-dom";
 import { styled } from "@mui/system";
+import ThinFooter from "../components/ThinFooter"; // Importing the ThinFooter component
 const STEM = "/assets/STEM1.png";  
-const BackgroundImage = "/assets/Back.jpg"; // Assuming it's in public/assets
+const BackgroundImage = "/assets/Back.jpg"; 
 
-const HeroContainer = styled("div")({
+// Main Wrapper with Background Image
+const MainContainer = styled("div")({
   position: "relative",
   width: "100%",
-  minHeight: "100vh", // Ensures full viewport height
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
+  minHeight: "100vh",
+  paddingTop: "60px",
   backgroundImage: `url(${BackgroundImage})`,
   backgroundSize: "cover",
   backgroundPosition: "center",
   backgroundRepeat: "no-repeat",
 });
 
+// Overlay to Improve Text Visibility
 const Overlay = styled("div")({
   position: "absolute",
   top: 0,
   left: 0,
   width: "100%",
   height: "100%",
-  backgroundColor: "rgba(252, 252, 252, 0.3)", // Adds a semi-transparent overlay
+  backgroundColor: "rgba(252, 252, 252, 0.3)",
   zIndex: 1,
 });
 
+// Hero Section
 const HeroSection = styled("div")({
   display: "flex",
   alignItems: "center",
@@ -35,12 +37,12 @@ const HeroSection = styled("div")({
   width: "100%",
   padding: "20px",
   position: "relative",
-  zIndex: 2, // Ensures content is above the overlay
+  zIndex: 2,
 });
 
 const TextSection = styled("div")({
   maxWidth: "50%",
-  color: "#fff", // White text for better contrast
+  color: "#fff",
 });
 
 const HighlightText = styled("span")({
@@ -71,35 +73,51 @@ const StyledImage = styled("img")({
   borderRadius: "15px",
 });
 
+const Section = styled("div")({
+  textAlign: "center",
+  padding: "60px 20px",
+  backgroundColor: "rgba(0, 0, 0, 0.7)", // Dark background
+  color: "#fff", // White text
+  position: "relative",
+  zIndex: 2,
+  borderRadius: "15px", // Optional for a better look
+});
+
+
 const Home = () => {
   return (
-    <HeroContainer>
+    <MainContainer>
       <Overlay />
-      <HeroSection>
-        {/* Left Section - Text */}
-        <TextSection>
-          <Typography variant="h4" color="primary">
-            Education System
-          </Typography>
-          <Typography variant="h3" fontWeight="bold" gutterBottom>
- Gain High <HighlightText>knowledge</HighlightText>
-          </Typography>
-          <Typography variant="body1" color="textSecondary" paragraph>
-            Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry. Lorem Ipsum has been the industry's standard dummy text ever
-            since the 1500s.
-          </Typography>
+      <Container maxWidth="lg" sx={{ position: "relative", zIndex: 2 }}>
+        {/* Hero Section */}
+        <HeroSection>
+          <TextSection>
+            <Typography variant="h4" color="primary">
+              Education System
+            </Typography>
+            <Typography variant="h3" fontWeight="bold" gutterBottom>
+              Gain High <HighlightText>knowledge</HighlightText>
+            </Typography>
+            <Typography variant="body1" color="textSecondary" paragraph>
+            BrightMindsSTEM inspires young thinkers to explore science, technology, engineering,
+             and math in creative ways. Our platform provides engaging resources and virtual lab activities to
+              spark curiosity and innovation
+            </Typography>
+            <StyledButton component={Link} to="/learn">
+              Enter the World →
+            </StyledButton>
+          </TextSection>
+          <ImageSection>
+            <StyledImage src={STEM} alt="Education" />
+          </ImageSection>
+        </HeroSection>
 
-          <StyledButton component={Link} to="/learn">
-            Enter the World →
-          </StyledButton>
-        </TextSection>
-        <ImageSection>
-          <StyledImage src={STEM} alt="Education" />
-        </ImageSection>
+        {/* About Us Section */}
        
-      </HeroSection>
-    </HeroContainer>
+
+       <ThinFooter/>
+      </Container>
+    </MainContainer>
   );
 };
 
