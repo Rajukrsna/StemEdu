@@ -2,36 +2,36 @@ import * as React from 'react';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import AutoFixHighRoundedIcon from '@mui/icons-material/AutoFixHighRounded';
-import ConstructionRoundedIcon from '@mui/icons-material/ConstructionRounded';
-import SettingsSuggestRoundedIcon from '@mui/icons-material/SettingsSuggestRounded';
-import ThumbUpAltRoundedIcon from '@mui/icons-material/ThumbUpAltRounded';
-import { SitemarkIcon } from './CustomIcons';
+import ScienceRoundedIcon from '@mui/icons-material/ScienceRounded';
+import EmojiEventsRoundedIcon from '@mui/icons-material/EmojiEventsRounded';
+import SchoolRoundedIcon from '@mui/icons-material/SchoolRounded';
+import BarChartRoundedIcon from '@mui/icons-material/BarChartRounded';
+import logo from "../logo2.svg"; // Adjust path if needed
 
 const items = [
   {
-    icon: <SettingsSuggestRoundedIcon sx={{ color: 'text.secondary' }} />,
-    title: 'Adaptable performance',
+    icon: <ScienceRoundedIcon sx={{ color: 'text.secondary' }} />,
+    title: 'Interactive STEM Labs',
     description:
-      'Our product effortlessly adjusts to your needs, boosting efficiency and simplifying your tasks.',
+      'Explore hands-on virtual labs for Math, Physics, Chemistry, and more, making learning engaging and practical.',
   },
   {
-    icon: <ConstructionRoundedIcon sx={{ color: 'text.secondary' }} />,
-    title: 'Built to last',
+    icon: <EmojiEventsRoundedIcon sx={{ color: 'text.secondary' }} />,
+    title: 'Gamified Learning',
     description:
-      'Experience unmatched durability that goes above and beyond with lasting investment.',
+      'Earn XP, climb the leaderboard, and achieve Bronze, Silver, or Gold ranks while mastering STEM concepts.',
   },
   {
-    icon: <ThumbUpAltRoundedIcon sx={{ color: 'text.secondary' }} />,
-    title: 'Great user experience',
+    icon: <SchoolRoundedIcon sx={{ color: 'text.secondary' }} />,
+    title: 'Personalized Learning',
     description:
-      'Integrate our product into your routine with an intuitive and easy-to-use interface.',
+      'Track progress with assessments and flashcards, ensuring better retention and understanding of key concepts.',
   },
   {
-    icon: <AutoFixHighRoundedIcon sx={{ color: 'text.secondary' }} />,
-    title: 'Innovative functionality',
+    icon: <BarChartRoundedIcon sx={{ color: 'text.secondary' }} />,
+    title: 'Performance Insights',
     description:
-      'Stay ahead with features that set new standards, addressing your evolving needs better than the rest.',
+      'Educators can monitor student progress and provide guidance with real-time performance tracking.',
   },
 ];
 
@@ -41,8 +41,7 @@ export default function Content() {
       sx={{ flexDirection: 'column', alignSelf: 'center', gap: 4, maxWidth: 450 }}
     >
       <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-        <SitemarkIcon />
-      </Box>
+   <img src={logo} alt="STEMhacks Logo" style={{ height: 50 }} />      </Box>
       {items.map((item, index) => (
         <Stack key={index} direction="row" sx={{ gap: 2 }}>
           {item.icon}

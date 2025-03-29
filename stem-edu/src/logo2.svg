@@ -1,0 +1,25 @@
+<svg
+    version="1.1"
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 400 100"
+    width="400"
+    height="100"
+    fill="none"
+>
+    <!-- Light Bulb -->
+    <circle cx="50" cy="40" r="30" fill="yellow" stroke="black" stroke-width="3"/>
+    <rect x="40" y="70" width="20" height="10" fill="black"/>
+    <rect x="45" y="80" width="10" height="10" fill="black"/>
+    
+    <!-- Brain Outline -->
+    <path d="M35 65C30 55 20 50 20 35C20 20 35 10 50 10" stroke="black" stroke-width="3"/>
+    <path d="M65 65C70 55 80 50 80 35C80 20 65 10 50 10" stroke="black" stroke-width="3"/>
+
+    <!-- Text: BrightMindsSTEM (Now Together) -->
+    <text x="100" y="55" font-family="Arial, sans-serif" font-size="30" font-weight="bold" fill="blue">
+        BrightMinds
+    </text>
+    <text x="285" y="55" font-family="Arial, sans-serif" font-size="30" font-weight="bold" fill="red">
+        STEM
+    </text>
+</svg>
