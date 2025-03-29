@@ -22,38 +22,65 @@ ComponentTechnology**Frontend**React.js, Vercel**Backend**Node.js, Express.js, R
 
 ### **1️⃣ Clone the Repository**
 
-Plain textANTLR4BashCC#CSSCoffeeScriptCMakeDartDjangoDockerEJSErlangGitGoGraphQLGroovyHTMLJavaJavaScriptJSONJSXKotlinLaTeXLessLuaMakefileMarkdownMATLABMarkupObjective-CPerlPHPPowerShell.propertiesProtocol BuffersPythonRRubySass (Sass)Sass (Scss)SchemeSQLShellSwiftSVGTSXTypeScriptWebAssemblyYAMLXML`   git clone https://github.com/your-username/BrightMindsSTEM.git  cd BrightMindsSTEM   `
+bash
+
+`git clone https://github.com/your-username/BrightMindsSTEM.git
+cd BrightMindsSTEM`
 
 ### **2️⃣ Install Dependencies**
 
 #### **Frontend:**
 
-Plain textANTLR4BashCC#CSSCoffeeScriptCMakeDartDjangoDockerEJSErlangGitGoGraphQLGroovyHTMLJavaJavaScriptJSONJSXKotlinLaTeXLessLuaMakefileMarkdownMATLABMarkupObjective-CPerlPHPPowerShell.propertiesProtocol BuffersPythonRRubySass (Sass)Sass (Scss)SchemeSQLShellSwiftSVGTSXTypeScriptWebAssemblyYAMLXML`   cd frontend  npm install  npm start   `
+bash
+
+CopyEdit
+
+`cd frontend
+npm install
+npm start`
 
 #### **Backend:**
 
-Plain textANTLR4BashCC#CSSCoffeeScriptCMakeDartDjangoDockerEJSErlangGitGoGraphQLGroovyHTMLJavaJavaScriptJSONJSXKotlinLaTeXLessLuaMakefileMarkdownMATLABMarkupObjective-CPerlPHPPowerShell.propertiesProtocol BuffersPythonRRubySass (Sass)Sass (Scss)SchemeSQLShellSwiftSVGTSXTypeScriptWebAssemblyYAMLXML`   cd backend  npm install  npm start   `
+bash
+
+`cd backend
+npm install
+npm start`
 
 ### **3️⃣ Set Up Environment Variables**
 
-Create a .env file in the backend directory with:
+Create a `.env` file in the backend directory with:
 
-Plain textANTLR4BashCC#CSSCoffeeScriptCMakeDartDjangoDockerEJSErlangGitGoGraphQLGroovyHTMLJavaJavaScriptJSONJSXKotlinLaTeXLessLuaMakefileMarkdownMATLABMarkupObjective-CPerlPHPPowerShell.propertiesProtocol BuffersPythonRRubySass (Sass)Sass (Scss)SchemeSQLShellSwiftSVGTSXTypeScriptWebAssemblyYAMLXML`   MONGO_URI=your_mongodb_connection  JWT_SECRET=your_secret_key  FRONTEND_URL=http://localhost:3000   `
+bash
 
+
+`MONGO_URI=your_mongodb_connection
+JWT_SECRET=your_secret_key
+FRONTEND_URL=http://localhost:3000`
 **📌 API Endpoints**
 --------------------
 
-### **🔐 Authentication Routes**
+### **🔐 Authentication Routes**  
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| **POST** | `/authRoute/register` | Register a new user |
+| **POST** | `/authRoute/login` | Log in a user |
+| **GET**  | `/authRoute/me` | Get logged-in user details |
 
-MethodEndpointDescription**POST**/authRoute/registerRegister a new user**POST**/authRoute/loginLog in a user**GET**/authRoute/meGet logged-in user details
+### **🧪 Experiment Routes**  
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| **GET**  | `/api/experiments` | Fetch all experiments from the database |
+| **GET**  | `/api/glatest/:id` | Get the latest experiment a user has performed |
+| **GET**  | `/api/latest/:id` | Fetch all experiments a user has performed |
+| **POST** | `/api/save-progress` | Save the latest experiment performed by the user |
 
-### **🧪 Experiment Routes**
-
-MethodEndpointDescription**GET**/api/experimentsFetch all experiments from the database**GET**/api/glatest/:idGet the latest experiment a user has performed**GET**/api/latest/:idFetch all experiments a user has performed**POST**/api/save-progressSave the latest experiment performed by the user
-
-### **📊 Progress & Leaderboard Routes**
-
-MethodEndpointDescription**GET**/api/progress/:idFetch user progress data**GET**/api/getUsersGet all users on the platform (for leaderboard)**POST**/api/saveAssesmentSave XP gained from assessments
+### **📊 Progress & Leaderboard Routes**  
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| **GET**  | `/api/progress/:id` | Fetch user progress data |
+| **GET**  | `/api/getUsers` | Get all users on the platform (for leaderboard) |
+| **POST** | `/api/saveAssesment` | Save XP gained from assessments |
 
 **💡 Contribution Guide**
 -------------------------
