@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
-import { Box, Button, Card, CardContent, Typography, LinearProgress, Grid } from "@mui/material";
-import { School, Assignment, Build, RocketLaunch } from "@mui/icons-material";
+import { Box, Button, Card, CardContent, Typography, LinearProgress, Grid, useTheme, useMediaQuery } from "@mui/material";import { School, Assignment, Build, RocketLaunch } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom"; 
 import axios from "axios";
 import { useState } from "react"; 
@@ -19,6 +18,10 @@ console.log(userId)
 
 const name = localStorage.getItem("name");
 const Dashboard = () => {
+    const theme = useTheme();
+
+    const isMobile = useMediaQuery(theme.breakpoints.down('md')); // Add this line
+
   const Navigate = useNavigate();
  const [completedLab, SetCompletedLab] = useState([]);
  const [latestLab, setLatestLab] = useState({});
@@ -82,12 +85,23 @@ useEffect(() => {
   };
 
   return (
-    <Box sx={{ padding: "0px", flexGrow: 1 }}>
-      <Grid container spacing={2}>
+    <Box sx={{ 
+       padding: isMobile ? "8px" : "0px",
+        paddingTop: isMobile ? "80px" : "80px",
+      flexGrow: 1 }}>
+       <Grid container spacing={isMobile ? 1 : 2}>
       <Grid item xs={12} md={7}>
-  <Card sx={{ padding: "20px", borderRadius: "10px", marginBottom: "20px" }}>
+  <Card sx={{ 
+   padding: isMobile ? "12px" : "20px",  // Responsive padding
+  borderRadius: "10px", 
+  marginBottom: isMobile ? "12px" : "20px"  // Responsive margins
+}}>
     <CardContent>
-      <Typography variant="h6">STEM Learning Made Easy</Typography>
+    <Typography 
+  variant={isMobile ? "body1" : "h6"}  // Smaller font on mobile
+>
+  STEM Learning Made Easy
+</Typography>
 
       {latestLab ? (
         <>
@@ -119,9 +133,15 @@ useEffect(() => {
     </CardContent>
   </Card>
 
-  <Box sx={{ display: "flex", flexDirection: "row", gap: 2 }}>
+  <Box sx={{ display: "flex",
+    flexDirection: isMobile ? "column" : "row",
+     gap: 2 }}>
     {labels.map((item, index) => (
-      <Card key={index} sx={{ padding: "10px", borderRadius: "10px", textAlign: "center" }}>
+      <Card key={index} sx={{ padding: "10px", 
+      padding: isMobile ? "8px" : "10px",  // Smaller padding on mobile
+      borderRadius: "10px", 
+      textAlign: "center",
+      width: isMobile ? "100%" : "auto" }}>
         <CardContent>
           {item.icon}
           <Typography variant="h6" sx={{ mt: 1 }}>{item.text}</Typography>
@@ -134,14 +154,16 @@ useEffect(() => {
 
 
         <Grid item xs={12} md={5}>
-          <Box sx={{ display: "flex", gap: 2, marginBottom: "20px" }}>
+          <Box sx={{ display: "flex",  flexDirection: isMobile ? "column" : "row",  // Stack on mobile
+  gap: isMobile ? 1 : 2, marginBottom: isMobile ? "12px" : "20px"  }}>
             <Card sx={{ flex: 1, textAlign: "center", padding: "10px", borderRadius: "10px" }}>
               <Typography variant="h6">🔥 Daily Streak</Typography>
               <Typography variant="h5">0 Days</Typography>
             </Card>
-            <Card sx={{ flex: 1, textAlign: "center", padding: "10px", borderRadius: "10px" }}>
+            <Card sx={{ flex: 1, textAlign: "center", 
+               padding: isMobile ? "8px" : "10px", borderRadius: "10px" }}>
               <Typography variant="h6">⭐ Total XP</Typography>
-              <Typography variant="h5">{totalXp}</Typography>
+              <Typography variant={isMobile ? "h6" : "h5"}  >{totalXp}</Typography>
             </Card>
           </Box>
 

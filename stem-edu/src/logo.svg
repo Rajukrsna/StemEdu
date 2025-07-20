@@ -1,22 +1,41 @@
 <svg
     version="1.1"
     xmlns="http://www.w3.org/2000/svg"
-    viewBox="0 0 400 100"
-    width="400"
-    height="100"
+    viewBox="0 0 350 80"
+    width="350"
+    height="80"
     fill="none"
 >
-    <!-- Light Bulb -->
-    <circle cx="50" cy="40" r="30" fill="gold" stroke="white" stroke-width="2"/>
-    <rect x="40" y="70" width="20" height="10" fill="white"/>
-    <rect x="45" y="80" width="10" height="10" fill="white"/>
+    <defs>
+        <linearGradient id="cleanGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" style="stop-color:#2196F3;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#9C27B0;stop-opacity:1" />
+        </linearGradient>
+    </defs>
     
-    <!-- Brain Outline -->
-    <path d="M35 65C30 55 20 50 20 35C20 20 35 10 50 10" stroke="white" stroke-width="2"/>
-    <path d="M65 65C70 55 80 50 80 35C80 20 65 10 50 10" stroke="white" stroke-width="2"/>
-
-    <!-- Text: BrightMindsSTEM (Now in White for Dark Navbar) -->
-    <text x="100" y="55" font-family="Arial, sans-serif" font-size="30" font-weight="bold" fill="white">
-        BrightMindsSTEM
+    <!-- Simplified Brain Icon -->
+    <circle cx="40" cy="40" r="25" fill="none" stroke="url(#cleanGrad)" stroke-width="3"/>
+    <circle cx="40" cy="40" r="8" fill="url(#cleanGrad)"/>
+    
+    <!-- Minimal Lightning/Idea Symbol -->
+    <path d="M35 30L45 35L40 40L50 50L40 45L45 40L35 30Z" 
+          fill="#FFD700" 
+          opacity="0.9"/>
+    
+    <!-- Clean Typography -->
+    <text x="80" y="35" 
+          font-family="'SF Pro Display', 'Helvetica', sans-serif" 
+          font-size="22" 
+          font-weight="600" 
+          fill="white">
+        BrightMinds
+    </text>
+    <text x="80" y="52" 
+          font-family="'SF Pro Display', 'Helvetica', sans-serif" 
+          font-size="12" 
+          font-weight="400" 
+          fill="url(#cleanGrad)" 
+          letter-spacing="1px">
+        STEM EDUCATION
     </text>
 </svg>

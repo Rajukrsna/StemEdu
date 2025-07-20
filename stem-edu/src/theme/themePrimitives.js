@@ -159,53 +159,81 @@ export const getDesignTokens = (mode) => {
         }),
       },
     },
-    typography: {
-      fontFamily: 'Inter, sans-serif',
+   typography: {
+      fontFamily: [
+        'Inter',
+        '-apple-system', 
+        'BlinkMacSystemFont',
+        'Segoe UI',
+        'system-ui',
+        'sans-serif'
+      ].join(','),
       h1: {
         fontSize: defaultTheme.typography.pxToRem(48),
-        fontWeight: 600,
+        fontWeight: 700,
         lineHeight: 1.2,
-        letterSpacing: -0.5,
+        letterSpacing: '-0.02em',
+        fontFamily: 'Inter, -apple-system, system-ui, sans-serif',
       },
       h2: {
         fontSize: defaultTheme.typography.pxToRem(36),
         fontWeight: 600,
         lineHeight: 1.2,
+        letterSpacing: '-0.01em',
+        fontFamily: 'Inter, -apple-system, system-ui, sans-serif',
       },
       h3: {
         fontSize: defaultTheme.typography.pxToRem(30),
         lineHeight: 1.2,
+        fontWeight: 600,
+        fontFamily: 'Inter, -apple-system, system-ui, sans-serif',
       },
       h4: {
         fontSize: defaultTheme.typography.pxToRem(24),
         fontWeight: 600,
         lineHeight: 1.5,
+        fontFamily: 'Inter, -apple-system, system-ui, sans-serif',
       },
       h5: {
         fontSize: defaultTheme.typography.pxToRem(20),
         fontWeight: 600,
+        fontFamily: 'Inter, -apple-system, system-ui, sans-serif',
       },
       h6: {
         fontSize: defaultTheme.typography.pxToRem(18),
         fontWeight: 600,
+        fontFamily: 'Inter, -apple-system, system-ui, sans-serif',
       },
       subtitle1: {
         fontSize: defaultTheme.typography.pxToRem(18),
+        fontFamily: 'Inter, -apple-system, system-ui, sans-serif',
       },
       subtitle2: {
         fontSize: defaultTheme.typography.pxToRem(14),
         fontWeight: 500,
+        fontFamily: 'Inter, -apple-system, system-ui, sans-serif',
       },
       body1: {
         fontSize: defaultTheme.typography.pxToRem(14),
+        fontWeight: 400,
+        lineHeight: 1.6,
+        fontFamily: 'Inter, -apple-system, system-ui, sans-serif',
       },
       body2: {
         fontSize: defaultTheme.typography.pxToRem(14),
         fontWeight: 400,
+        lineHeight: 1.5,
+        fontFamily: 'Inter, -apple-system, system-ui, sans-serif',
+      },
+      button: {
+        fontFamily: 'Inter, -apple-system, system-ui, sans-serif',
+        fontWeight: 500,
+        textTransform: 'none',
       },
       caption: {
         fontSize: defaultTheme.typography.pxToRem(12),
         fontWeight: 400,
+        fontFamily: 'Inter, -apple-system, system-ui, sans-serif',
       },
     },
     shape: {
@@ -317,55 +345,8 @@ export const colorSchemes = {
   },
 };
 
-export const typography = {
-  fontFamily: 'Inter, sans-serif',
-  h1: {
-    fontSize: defaultTheme.typography.pxToRem(48),
-    fontWeight: 600,
-    lineHeight: 1.2,
-    letterSpacing: -0.5,
-  },
-  h2: {
-    fontSize: defaultTheme.typography.pxToRem(36),
-    fontWeight: 600,
-    lineHeight: 1.2,
-  },
-  h3: {
-    fontSize: defaultTheme.typography.pxToRem(30),
-    lineHeight: 1.2,
-  },
-  h4: {
-    fontSize: defaultTheme.typography.pxToRem(24),
-    fontWeight: 600,
-    lineHeight: 1.5,
-  },
-  h5: {
-    fontSize: defaultTheme.typography.pxToRem(20),
-    fontWeight: 600,
-  },
-  h6: {
-    fontSize: defaultTheme.typography.pxToRem(18),
-    fontWeight: 600,
-  },
-  subtitle1: {
-    fontSize: defaultTheme.typography.pxToRem(18),
-  },
-  subtitle2: {
-    fontSize: defaultTheme.typography.pxToRem(14),
-    fontWeight: 500,
-  },
-  body1: {
-    fontSize: defaultTheme.typography.pxToRem(14),
-  },
-  body2: {
-    fontSize: defaultTheme.typography.pxToRem(14),
-    fontWeight: 400,
-  },
-  caption: {
-    fontSize: defaultTheme.typography.pxToRem(12),
-    fontWeight: 400,
-  },
-};
+// Find the typography section and update it like this:
+
 
 export const shape = {
   borderRadius: 8,

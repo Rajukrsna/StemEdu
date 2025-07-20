@@ -1,35 +1,153 @@
 import React, { useState } from "react";
-import { Box, Button, Card, CardContent, Typography, Chip, Modal, Radio, RadioGroup, FormControlLabel } from "@mui/material";
-import { Science, Calculate, AutoStories, Functions, Biotech, Engineering } from "@mui/icons-material"; 
+import { 
+  Box, 
+  Button, 
+  Card, 
+  CardContent, 
+  Typography, 
+  Chip, 
+  Modal, 
+  Radio, 
+  RadioGroup, 
+  FormControlLabel,
+  useTheme,
+  useMediaQuery,
+  LinearProgress,
+  Stack,
+  IconButton,
+  Fade,
+  Grid
+} from "@mui/material";
+import { 
+  Science, 
+  Calculate, 
+  AutoStories, 
+  Functions, 
+  Biotech, 
+  Engineering,
+  Close as CloseIcon,
+  ArrowBack,
+  ArrowForward,
+  CheckCircle,
+  School
+} from "@mui/icons-material";
+import { 
+  Award, 
+  Trophy, 
+  Target, 
+  Zap, 
+  BookOpen, 
+  FolderOpen, 
+  Clock, 
+  FileText, 
+  Star 
+} from "lucide-react";
 import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+
 // Mock data for assessments
 const assessments = [
-  { title: "General_Mathematics", category: "Mathematics", icon: <Functions /> , track: "maths"},
-  { title: "Newtonian_Laws_and_Physics", category: "Physics", icon: <Biotech />, status: "Calibrating", track: "physics"},
-  { title: "Human_Anatomy", category: "Science", icon: <AutoStories />, status: "Calibrating" , track: "biology"},
-  { title: "Fluid_Mechanics", category: "Physics", icon: <Engineering /> ,track: "physics"},
-  { title: "Data_Storytelling", category: "Engineering", icon: <Calculate /> ,track: "physics"},
-  { title: "AI_Fundamentals", category: "Technology", icon: <Calculate />, track: "physics"},
-  { title: "Quantum_Mechanics_Basics", category: "Physics", icon: <Science /> ,track: "physics"},
-  { title: "Organic_Chemistry_Reactions", category: "Chemistry", icon: <Science />, track: "chemistry"},
+  { 
+    title: "General_Mathematics", 
+    category: "Mathematics", 
+    icon: <Functions />, 
+    track: "maths",
+    difficulty: "Intermediate",
+    duration: "15 min",
+    questions: 10,
+    color: "#2196F3"
+  },
+  { 
+    title: "Newtonian_Laws_and_Physics", 
+    category: "Physics", 
+    icon: <Biotech />, 
+    status: "Calibrating", 
+    track: "physics",
+    difficulty: "Advanced",
+    duration: "20 min",
+    questions: 10,
+    color: "#FF5722"
+  },
+  { 
+    title: "Human_Anatomy", 
+    category: "Science", 
+    icon: <AutoStories />, 
+    status: "Calibrating", 
+    track: "biology",
+    difficulty: "Beginner",
+    duration: "12 min",
+    questions: 10,
+    color: "#4CAF50"
+  },
+  { 
+    title: "Fluid_Mechanics", 
+    category: "Physics", 
+    icon: <Engineering />, 
+    track: "physics",
+    difficulty: "Advanced",
+    duration: "18 min",
+    questions: 10,
+    color: "#FF5722"
+  },
+  { 
+    title: "Data_Storytelling", 
+    category: "Engineering", 
+    icon: <Calculate />, 
+    track: "physics",
+    difficulty: "Intermediate",
+    duration: "15 min",
+    questions: 10,
+    color: "#9C27B0"
+  },
+  { 
+    title: "AI_Fundamentals", 
+    category: "Technology", 
+    icon: <Calculate />, 
+    track: "physics",
+    difficulty: "Intermediate",
+    duration: "16 min",
+    questions: 10,
+    color: "#607D8B"
+  },
+  { 
+    title: "Quantum_Mechanics_Basics", 
+    category: "Physics", 
+    icon: <Science />, 
+    track: "physics",
+    difficulty: "Expert",
+    duration: "25 min",
+    questions: 10,
+    color: "#FF5722"
+  },
+  { 
+    title: "Organic_Chemistry_Reactions", 
+    category: "Chemistry", 
+    icon: <Science />, 
+    track: "chemistry",
+    difficulty: "Advanced",
+    duration: "22 min",
+    questions: 10,
+    color: "#FF9800"
+  },
 ];
 
 const categories = ["All", "Physics", "Chemistry", "Science", "Technology", "Engineering", "Mathematics"];
 const backendUrl = process.env.REACT_APP_BACKEND_URL;
-console.log(backendUrl)
+
 const AssessmentUI = () => {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  const isSmallMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [openModal, setOpenModal] = useState(false);
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [selectedAnswers, setSelectedAnswers] = useState({});
-
   const [selectedAssessment, setSelectedAssessment] = useState(null);
-  const userId = localStorage.getItem("userId");
-
   const [questions, setQuestions] = useState([]);
 
+  const userId = localStorage.getItem("userId");
 
   const questionsData = {
     General_Mathematics: [
@@ -129,9 +247,8 @@ Organic_Chemistry_Reactions: [
     { question: "What is the difference between SN1 and SN2 reactions?", options: ["SN1 is two-step, SN2 is one-step", "Both are the same", "SN1 is one-step, SN2 is two-step", "SN2 involves a carbocation intermediate"], correct: "SN1 is two-step, SN2 is one-step" }
 ]
 
-};
-
-  
+    // Add other question sets here...
+  }
 
   const filteredAssessments = selectedCategory === "All"
     ? assessments
@@ -146,112 +263,550 @@ Organic_Chemistry_Reactions: [
     setOpenModal(true);
     setCurrentQuestion(0);
     setSelectedAnswers({});
-
-  
-    // Load questions based on assessment track
-    const category = assessment.title;  // Extract category from assessment
-    setQuestions(questionsData[category] || []); // Load questions dynamically
+    const category = assessment.title;
+    setQuestions(questionsData[category] || []); 
   };
   
   const handleSubmit = async () => {
     const correctAnswers = questions.filter((q, i) => selectedAnswers[i] === q.correct).length;
     if (correctAnswers >= 5) {
       try {
-       await axios.post(`${backendUrl}/api/saveAssesment`, {
+        await axios.post(`${backendUrl}/api/saveAssesment`, {
           userId, 
-          track: selectedAssessment.track // ✅ Now correctly tracks the test
+          track: selectedAssessment.track
         });
-
-        toast.success("🎉 10 XP added to your account!", { position: "top-right" });
+        toast.success("10 XP added to your account!", { position: "top-right" });
       } catch (error) {
-        toast.error("❌ Error saving assessment. Please try again.", { position: "top-right" });
+        toast.error("Error saving assessment. Please try again.", { position: "top-right" });
       }
     } else {
-      toast.error("⚠️ Not enough correct answers. Please reattempt the test!", { position: "top-right" });
+      toast.error("Not enough correct answers. Please reattempt the test!", { position: "top-right" });
     }
-    setTimeout(() => setOpenModal(false), 3000); // Close modal after 3 seconds
+    setTimeout(() => setOpenModal(false), 3000);
+  };
+
+  const getDifficultyColor = (difficulty) => {
+    const colors = {
+      'Beginner': '#4CAF50',
+      'Intermediate': '#FF9800', 
+      'Advanced': '#FF5722',
+      'Expert': '#9C27B0'
+    };
+    return colors[difficulty] || '#757575';
+  };
+
+  const getDifficultyIcon = (difficulty) => {
+    const icons = {
+      'Beginner': <Target size={16} />,
+      'Intermediate': <Award size={16} />,
+      'Advanced': <Trophy size={16} />,
+      'Expert': <Zap size={16} />
+    };
+    return icons[difficulty] || <School />;
   };
 
   return (
-    <Box sx={{ padding: 3 }}>
-            <ToastContainer />
-
-      <Box sx={{ display: "flex", gap: 1, mb: 3 }}>
-        {categories.map((cat) => (
-          <Button
-            key={cat}
-            variant={selectedCategory === cat ? "contained" : "outlined"}
-            onClick={() => setSelectedCategory(cat)}
+    <Box 
+     sx={{ 
+    p: isMobile ? 2 : 4,
+    maxWidth: '100%',
+    minHeight: '100vh',
+   
+  }}
+      className={isMobile ? "mobile-full-width" : ""}
+    >
+      <ToastContainer />
+      
+      {/* Header Section */}
+      <Box sx={{ mb: 4, textAlign: 'center' }}>
+        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 2, mb: 2 }}>
+          <BookOpen size={isMobile ? 24 : 32} color="#2196F3" />
+          <Typography 
+            variant={isMobile ? "h5" : "h4"} 
+            sx={{ 
+              fontWeight: 'bold', 
+              background: 'linear-gradient(45deg, #2196F3, #9C27B0)',
+              backgroundClip: 'text',
+              WebkitBackgroundClip: 'text',
+              color: 'transparent'
+            }}
           >
-            {cat}
-          </Button>
-        ))}
-      </Box>
-
-      <Typography variant="h6" sx={{ mb: 2 }}>
-        {filteredAssessments.length} Assessments
-      </Typography>
-
-      <Box sx={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))", gap: 2 }}>
-        {filteredAssessments.map((test, index) => (
-          <Card key={index} sx={{ padding: 2, borderRadius: 2, position: "relative" }}>
-            <CardContent>
-              <Typography variant="subtitle2" color="text.secondary">ASSESSMENT</Typography>
-              {test.status && (
-                <Chip label={test.status} color="secondary" sx={{ position: "absolute", top: 10, right: 10 }} />
-              )}
-              <Typography variant="h6" sx={{ mt: 1 }}>{test.title}</Typography>
-              <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between", mt: 2 }}>
-                <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                  {test.icon}
-                  <Typography variant="body2">{test.category}</Typography>
-                </Box>
-                <Button variant="outlined" size="small" onClick={() => startAssessment(test)}>Start</Button>
-              </Box>
-            </CardContent>
-            <Typography sx={{ position: "absolute", bottom:0, right: 10, fontSize: 14, color: "green" }}>
-              10 XP
-            </Typography>
-          </Card>
-        ))}
-      </Box>
-
-      <Modal open={openModal} onClose={() => setOpenModal(false)}>
-  <Box sx={{ width: 400, bgcolor: "white", p: 3, mx: "auto", mt: 5, borderRadius: 2 }}>
-    {questions.length > 0 ? (
-      <>
-        <Typography variant="h6">{questions[currentQuestion].question}</Typography>
-        <RadioGroup value={selectedAnswers[currentQuestion] || ""} onChange={handleOptionChange}>
-          {questions[currentQuestion].options.map((opt, idx) => (
-            <FormControlLabel key={idx} value={opt} control={<Radio />} label={opt} />
-          ))}
-        </RadioGroup>
-
-        <Box sx={{ display: "flex", justifyContent: "space-between", mt: 2 }}>
-          {currentQuestion > 0 && (
-            <Button onClick={() => setCurrentQuestion(currentQuestion - 1)} variant="outlined">
-              Previous
-            </Button>
-          )}
-
-          {currentQuestion < questions.length - 1 ? (
-            <Button onClick={() => setCurrentQuestion(currentQuestion + 1)} variant="contained">
-              Next
-            </Button>
-          ) : (
-            <Button onClick={handleSubmit} variant="contained" color="primary">
-              Submit
-            </Button>
-          )}
+            Assessment Center
+          </Typography>
         </Box>
-      </>
-    ) : (
-      <Typography variant="h6">No questions available for this assessment.</Typography>
-    )}
-  </Box>
-</Modal>
+        <Typography 
+          variant="body1" 
+          color="text.secondary"
+          sx={{ fontSize: isMobile ? '0.875rem' : '1rem' }}
+        >
+          Test your knowledge and earn XP points!
+        </Typography>
+      </Box>
 
+      {/* Category Filter - Mobile Responsive */}
+      <Box sx={{ mb: 4 }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 2 }}>
+          <FolderOpen size={20} color="#666" />
+          <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
+            Categories
+          </Typography>
+        </Box>
+        <Box 
+          sx={{ 
+            display: "flex", 
+            gap: 1, 
+            flexWrap: "wrap",
+            justifyContent: isMobile ? "center" : "flex-start"
+          }}
+        >
+          {categories.map((cat) => (
+            <Button
+              key={cat}
+              variant={selectedCategory === cat ? "contained" : "outlined"}
+              onClick={() => setSelectedCategory(cat)}
+              sx={{
+                minWidth: isMobile ? "auto" : "100px",
+                fontSize: isMobile ? '0.75rem' : '0.875rem',
+                px: isMobile ? 1.5 : 2,
+                py: isMobile ? 0.5 : 1,
+                borderRadius: 2,
+                textTransform: 'none',
+                fontWeight: selectedCategory === cat ? 'bold' : 'normal'
+              }}
+            >
+              {cat}
+            </Button>
+          ))}
+        </Box>
+      </Box>
 
+      {/* Assessment Count */}
+      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 3 }}>
+        <Target size={20} color="#FF5722" />
+        <Typography 
+          variant="h6" 
+          sx={{ 
+            fontWeight: 'bold',
+            fontSize: isMobile ? '1.1rem' : '1.25rem'
+          }}
+        >
+          {filteredAssessments.length} Assessments Available
+        </Typography>
+      </Box>
+
+      {/* Assessment Cards - Responsive Grid */}
+      <Grid container spacing={isMobile ? 2 : 3}>
+        {filteredAssessments.map((test, index) => (
+          <Grid item xs={12} sm={6} lg={4} key={index}>
+            <Card 
+              sx={{ 
+                height: '100%',
+                minHeight: '320px',        // Add minimum height
+                borderRadius: 3,
+                position: "relative",
+                transition: "all 0.3s ease",
+                border: `2px solid ${test.color}20`,
+                background: `linear-gradient(135deg, ${test.color}08, ${test.color}03)`,
+                "&:hover": {
+                  transform: isMobile ? "none" : "translateY(-8px)",
+                  boxShadow: `0 12px 24px ${test.color}30`,
+                  border: `2px solid ${test.color}40`
+                }
+              }}
+            >
+              <CardContent sx={{ p: isMobile ? 2 : 3, 
+                   pb: isMobile ? 2 : 3,    // Remove extra bottom padding
+            height: '100%',           // Add this
+            display: 'flex',          // Add this
+            flexDirection: 'column',  
+                 }}>
+                {/* Status Chip */}
+                {test.status && (
+                  <Chip 
+                    label={test.status} 
+                    color="secondary" 
+                    size="small"
+                    sx={{ 
+                      position: "absolute", 
+                      top: 12, 
+                      right: 12,
+                      fontSize: isMobile ? '0.7rem' : '0.75rem'
+                    }} 
+                  />
+                )}
+
+                {/* Assessment Type */}
+                <Typography 
+                  variant="subtitle2" 
+                  color="text.secondary"
+                  sx={{ 
+                    fontWeight: 'bold',
+                    fontSize: isMobile ? '0.7rem' : '0.75rem',
+                    letterSpacing: '0.5px'
+                  }}
+                >
+                  ASSESSMENT
+                </Typography>
+
+                {/* Title */}
+                <Typography 
+                  variant={isMobile ? "subtitle1" : "h6"} 
+                  sx={{ 
+                    mt: 1, 
+                    mb: 2,
+                    fontWeight: 'bold',
+                    color: test.color,
+                    lineHeight: 1.3,
+                    fontSize: isMobile ? '1rem' : '1.1rem'
+                  }}
+                >
+                  {test.title.replace(/_/g, ' ')}
+                </Typography>
+
+                {/* Assessment Details */}
+                <Stack spacing={1} sx={{ mb: 2 }}>
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                    {getDifficultyIcon(test.difficulty)}
+                    <Typography 
+                      variant="body2" 
+                      sx={{ 
+                        color: getDifficultyColor(test.difficulty),
+                        fontWeight: 'bold',
+                        fontSize: isMobile ? '0.75rem' : '0.875rem'
+                      }}
+                    >
+                      {test.difficulty}
+                    </Typography>
+                  </Box>
+                  
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                    <Clock size={14} color="#666" />
+                    <Typography 
+                      variant="body2" 
+                      color="text.secondary"
+                      sx={{ fontSize: isMobile ? '0.75rem' : '0.875rem' }}
+                    >
+                      {test.duration}
+                    </Typography>
+                    <FileText size={14} color="#666" />
+                    <Typography 
+                      variant="body2" 
+                      color="text.secondary"
+                      sx={{ fontSize: isMobile ? '0.75rem' : '0.875rem' }}
+                    >
+                      {test.questions} questions
+                    </Typography>
+                  </Box>
+                </Stack>
+
+                {/* Category and Start Button */}
+                <Box sx={{ 
+                   display: "flex", 
+            alignItems: "center", 
+            justifyContent: "space-between", 
+            mt: 'auto',              // Push to bottom
+            mb: 1,
+            gap: 2
+                }}>
+                  <Box sx={{ display: "flex", alignItems: "center", gap: 1 , flex: "1 1 auto",          // Add this
+    minWidth: 0  }}>
+                    <Box sx={{ 
+                      color: test.color, 
+                      display: 'flex', 
+                      alignItems: 'center' 
+                    }}>
+                      {test.icon}
+                    </Box>
+                    <Typography 
+                      variant="body2"
+                      sx={{ 
+                        fontWeight: 'medium',
+                        fontSize: isMobile ? '0.75rem' : '0.875rem'
+                      }}
+                    >
+                      {test.category}
+                    </Typography>
+                  </Box>
+                  
+                  <Button 
+                    variant="contained" 
+                    size={isMobile ? "small" : "medium"}
+                    onClick={() => startAssessment(test)}
+                    sx={{
+                      backgroundColor: test.color,
+                      borderRadius: 2,
+                      textTransform: 'none',
+                      fontWeight: 'bold',
+                      px: isMobile ? 2 : 3,
+                            py: isMobile ? 0.5 : 0.75,    // Add proper vertical padding
+
+                      fontSize: isMobile ? '0.75rem' : '0.875rem',
+                      minHeight: isMobile ? '32px' : '36px',
+                       minWidth: isMobile ? 'auto' : '120px',  // Add minimum width for desktop
+                      flexShrink: 0,                          // Prevent button from shrinking
+                      whiteSpace: 'nowrap', 
+                      "&:hover": {
+                        backgroundColor: test.color,
+                        filter: 'brightness(0.9)'
+                      }
+                    }}
+                  >
+                    Start Test
+                  </Button>
+                </Box>
+
+                {/* XP Badge - Fixed positioning */}
+                <Box sx={{ 
+                  display: 'flex', 
+                  justifyContent: 'flex-end', 
+                  mt: 1 
+                }}>
+                  <Box
+                    sx={{
+                      backgroundColor: '#4CAF50',
+                      color: 'white',
+                      px: 1.5,
+                      py: 0.5,
+                      borderRadius: 2,
+                      fontSize: isMobile ? '0.7rem' : '0.75rem',
+                      fontWeight: 'bold',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: 0.5
+                    }}
+                  >
+                    <Star size={14} />
+                    10 XP
+                  </Box>
+                </Box>
+              </CardContent>
+            </Card>
+          </Grid>
+        ))}
+      </Grid>
+
+      {/* Enhanced Modal - Mobile Responsive */}
+      <Modal 
+        open={openModal} 
+        onClose={() => setOpenModal(false)}
+        closeAfterTransition
+      >
+        <Fade in={openModal}>
+          <Box sx={{ 
+            width: isMobile ? '95%' : '600px',
+            maxWidth: '95vw',
+            maxHeight: '95vh',
+            bgcolor: "white", 
+            p: isMobile ? 2 : 4,
+            mx: "auto", 
+            my: isMobile ? 1 : 4,
+            borderRadius: 3,
+            boxShadow: 24,
+            overflow: 'auto'
+          }}>
+            {questions.length > 0 ? (
+              <>
+                {/* Modal Header */}
+                <Box sx={{ 
+                  display: 'flex', 
+                  justifyContent: 'space-between', 
+                  alignItems: 'center',
+                  mb: 3,
+                  pb: 2,
+                  borderBottom: '2px solid #f0f0f0'
+                }}>
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                    <FileText size={isMobile ? 20 : 24} color={selectedAssessment?.color} />
+                    <Typography 
+                      variant={isMobile ? "h6" : "h5"}
+                      sx={{ fontWeight: 'bold', color: selectedAssessment?.color }}
+                    >
+                      {selectedAssessment?.title.replace(/_/g, ' ')}
+                    </Typography>
+                  </Box>
+                  <IconButton 
+                    onClick={() => setOpenModal(false)}
+                    size={isMobile ? "small" : "medium"}
+                  >
+                    <CloseIcon />
+                  </IconButton>
+                </Box>
+
+                {/* Progress Bar */}
+                <Box sx={{ mb: 3 }}>
+                  <Box sx={{ 
+                    display: 'flex', 
+                    justifyContent: 'space-between', 
+                    mb: 1 
+                  }}>
+                    <Typography 
+                      variant="body2" 
+                      color="text.secondary"
+                      sx={{ fontSize: isMobile ? '0.75rem' : '0.875rem' }}
+                    >
+                      Question {currentQuestion + 1} of {questions.length}
+                    </Typography>
+                    <Typography 
+                      variant="body2" 
+                      color="text.secondary"
+                      sx={{ fontSize: isMobile ? '0.75rem' : '0.875rem' }}
+                    >
+                      {Math.round(((currentQuestion + 1) / questions.length) * 100)}% Complete
+                    </Typography>
+                  </Box>
+                  <LinearProgress 
+                    variant="determinate" 
+                    value={((currentQuestion + 1) / questions.length) * 100}
+                    sx={{ 
+                      height: 8, 
+                      borderRadius: 4,
+                      backgroundColor: '#f0f0f0',
+                      '& .MuiLinearProgress-bar': {
+                        backgroundColor: selectedAssessment?.color
+                      }
+                    }}
+                  />
+                </Box>
+
+                {/* Question */}
+                <Typography 
+                  variant={isMobile ? "subtitle1" : "h6"}
+                  sx={{ 
+                    mb: 3,
+                    fontWeight: 'bold',
+                    lineHeight: 1.4,
+                    fontSize: isMobile ? '1rem' : '1.1rem'
+                  }}
+                >
+                  {questions[currentQuestion].question}
+                </Typography>
+
+                {/* Answer Options */}
+                <RadioGroup 
+                  value={selectedAnswers[currentQuestion] || ""} 
+                  onChange={handleOptionChange}
+                  sx={{ mb: 3 }}
+                >
+                  {questions[currentQuestion].options.map((opt, idx) => (
+                    <FormControlLabel 
+                      key={idx} 
+                      value={opt} 
+                      control={
+                        <Radio 
+                          sx={{
+                            color: selectedAssessment?.color,
+                            '&.Mui-checked': {
+                              color: selectedAssessment?.color
+                            }
+                          }}
+                        />
+                      } 
+                      label={
+                        <Typography sx={{ 
+                          fontSize: isMobile ? '0.875rem' : '1rem',
+                          py: 0.5
+                        }}>
+                          {opt}
+                        </Typography>
+                      }
+                      sx={{
+                        mb: 1,
+                        p: 1.5,
+                        borderRadius: 2,
+                        border: '2px solid transparent',
+                        transition: 'all 0.2s ease',
+                        '&:hover': {
+                          backgroundColor: `${selectedAssessment?.color}10`,
+                          border: `2px solid ${selectedAssessment?.color}30`
+                        }
+                      }}
+                    />
+                  ))}
+                </RadioGroup>
+
+                {/* Navigation Buttons */}
+                <Box sx={{ 
+                  display: "flex", 
+                  justifyContent: "space-between", 
+                  alignItems: 'center',
+                  gap: 2,
+                  pt: 2,
+                  borderTop: '1px solid #f0f0f0'
+                }}>
+                  {currentQuestion > 0 ? (
+                    <Button 
+                      onClick={() => setCurrentQuestion(currentQuestion - 1)} 
+                      variant="outlined"
+                      startIcon={<ArrowBack />}
+                      sx={{
+                        borderColor: selectedAssessment?.color,
+                        color: selectedAssessment?.color,
+                        textTransform: 'none',
+                        fontWeight: 'bold',
+                        minHeight: isMobile ? '36px' : '42px',
+                        fontSize: isMobile ? '0.75rem' : '0.875rem'
+                      }}
+                    >
+                      Previous
+                    </Button>
+                  ) : (
+                    <Box />
+                  )}
+
+                  {currentQuestion < questions.length - 1 ? (
+                    <Button 
+                      onClick={() => setCurrentQuestion(currentQuestion + 1)} 
+                      variant="contained"
+                      endIcon={<ArrowForward />}
+                      sx={{
+                        backgroundColor: selectedAssessment?.color,
+                        textTransform: 'none',
+                        fontWeight: 'bold',
+                        minHeight: isMobile ? '36px' : '42px',
+                        fontSize: isMobile ? '0.75rem' : '0.875rem',
+                        "&:hover": {
+                          backgroundColor: selectedAssessment?.color,
+                          filter: 'brightness(0.9)'
+                        }
+                      }}
+                    >
+                      Next
+                    </Button>
+                  ) : (
+                    <Button 
+                      onClick={handleSubmit} 
+                      variant="contained" 
+                      color="success"
+                      endIcon={<CheckCircle />}
+                      sx={{
+                        textTransform: 'none',
+                        fontWeight: 'bold',
+                        minHeight: isMobile ? '36px' : '42px',
+                        fontSize: isMobile ? '0.75rem' : '0.875rem'
+                      }}
+                    >
+                      Submit Test
+                    </Button>
+                  )}
+                </Box>
+              </>
+            ) : (
+              <Box sx={{ textAlign: 'center', py: 4 }}>
+                <Typography variant="h6" color="text.secondary">
+                  No questions available for this assessment.
+                </Typography>
+                <Button 
+                  onClick={() => setOpenModal(false)}
+                  variant="contained"
+                  sx={{ mt: 2 }}
+                >
+                  Close
+                </Button>
+              </Box>
+            )}
+          </Box>
+        </Fade>
+      </Modal>
     </Box>
   );
 };

@@ -1,0 +1,222 @@
+/* Mobile-first responsive design */
+* {
+  box-sizing: border-box;
+}
+
+/* Base mobile styles (0-599px) */
+@media (max-width: 599px) {
+  .mobile-hidden {
+    display: none !important;
+  }
+  
+  .mobile-full-width {
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 8px !important;
+  }
+  
+  .mobile-stack {
+    flex-direction: column !important;
+    align-items: stretch !important;
+  }
+  
+  .mobile-center {
+    text-align: center !important;
+  }
+  
+  /* Ensure all containers are mobile-friendly */
+  .MuiContainer-root {
+    padding-left: 8px !important;
+    padding-right: 8px !important;
+    max-width: 100% !important;
+  }
+  
+  /* Card adjustments for mobile */
+  .MuiCard-root {
+    margin: 8px 0 !important;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1) !important;
+    border-radius: 8px !important;
+  }
+  
+  /* Button adjustments */
+  .MuiButton-root {
+    min-width: auto !important;
+    padding: 8px 12px !important;
+    font-size: 0.875rem !important;
+    margin: 4px !important;
+  }
+  
+  /* Typography adjustments */
+  .MuiTypography-h1 {
+    font-size: 1.5rem !important;
+    line-height: 1.2 !important;
+  }
+  
+  .MuiTypography-h2 {
+    font-size: 1.25rem !important;
+    line-height: 1.2 !important;
+  }
+  
+  .MuiTypography-h3 {
+    font-size: 1.1rem !important;
+    line-height: 1.2 !important;
+  }
+  
+  /* Table responsiveness */
+  .MuiTableContainer-root {
+    overflow-x: auto !important;
+    margin: 8px 0 !important;
+  }
+  
+  .MuiTable-root {
+    min-width: 300px !important;
+  }
+  
+  /* Form elements */
+  .MuiTextField-root {
+    margin: 8px 0 !important;
+    width: 100% !important;
+  }
+  
+  .MuiFormControl-root {
+    margin: 8px 0 !important;
+    width: 100% !important;
+  }
+  
+  /* Experiment containers */
+  .experiment-container {
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow-x: hidden !important;
+    padding: 8px !important;
+  }
+  
+  .experiment-controls {
+    flex-direction: column !important;
+    gap: 8px !important;
+    width: 100% !important;
+  }
+  
+  .experiment-visualization {
+    width: 100% !important;
+    height: 250px !important;
+    max-width: 100% !important;
+  }
+  
+  /* Navigation adjustments */
+  .MuiAppBar-root {
+    height: 56px !important;
+  }
+  
+  .MuiToolbar-root {
+    min-height: 56px !important;
+    padding: 0 8px !important;
+  }
+}
+
+/* Small tablets (600-899px) */
+@media (min-width: 600px) and (max-width: 899px) {
+  .tablet-responsive {
+    padding: 16px !important;
+  }
+  
+  .tablet-grid {
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 16px !important;
+  }
+  
+  .MuiContainer-root {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+  }
+  
+  .experiment-visualization {
+    height: 350px !important;
+  }
+}
+
+/* Desktop (900px+) */
+@media (min-width: 900px) {
+  .desktop-grid {
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 24px !important;
+  }
+  
+  .experiment-visualization {
+    height: 400px !important;
+  }
+}
+
+/* Sidebar responsive behavior */
+@media (max-width: 899px) {
+  .sidebar-mobile {
+    position: fixed !important;
+    top: 0 !important;
+    left: -250px !important;
+    width: 250px !important;
+    height: 100vh !important;
+    z-index: 1200 !important;
+    transition: left 0.3s ease !important;
+    background: white !important;
+    box-shadow: 2px 0 10px rgba(0,0,0,0.1) !important;
+  }
+  
+  .sidebar-mobile.open {
+    left: 0 !important;
+  }
+  
+  .sidebar-overlay {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    background-color: rgba(0, 0, 0, 0.5) !important;
+    z-index: 1100 !important;
+  }
+}
+
+/* Global responsive utilities */
+.responsive-padding {
+  padding: 8px;
+}
+
+@media (min-width: 600px) {
+  .responsive-padding {
+    padding: 16px;
+  }
+}
+
+@media (min-width: 900px) {
+  .responsive-padding {
+    padding: 24px;
+  }
+}
+/* Ensure no horizontal overflow */
+html, body {
+  overflow-x: hidden !important;
+  overflow-y: scroll !important;
+  height: auto !important;
+}
+
+#root {
+  overflow-x: hidden !important;
+}
+
+/* Touch-friendly interactive elements */
+@media (max-width: 599px) {
+  button, .MuiButton-root, .MuiIconButton-root {
+    min-height: 44px !important;
+    min-width: 44px !important;
+  }
+  
+  .MuiTab-root {
+    min-height: 48px !important;
+  }
+  
+  .MuiMenuItem-root {
+    min-height: 48px !important;
+  }
+}

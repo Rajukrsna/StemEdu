@@ -7,7 +7,8 @@ import { dataDisplayCustomizations } from './customizations/dataDisplay';
 import { feedbackCustomizations } from './customizations/feedback';
 import { navigationCustomizations } from './customizations/navigation';
 import { surfacesCustomizations } from './customizations/surfaces';
-import { colorSchemes, typography, shadows, shape } from './themePrimitives';
+// CHANGE THIS LINE - Remove typography, add getDesignTokens:
+import { colorSchemes, getDesignTokens, shadows, shape } from './themePrimitives';
 
 function AppTheme(props) {
   const { children, disableCustomTheme, themeComponents } = props;
@@ -21,9 +22,12 @@ function AppTheme(props) {
             cssVarPrefix: 'template',
           },
           colorSchemes, // Recently added in v6 for building light & dark mode app, see https://mui.com/material-ui/customization/palette/#color-schemes
-          typography,
-          shadows,
-          shape,
+          // CHANGE THIS LINE - Use getDesignTokens to get typography:
+          ...getDesignTokens('light'), // This includes typography, palette, shadows, shape
+          // Remove these individual imports since they're now in getDesignTokens:
+          // typography,
+          // shadows,
+          // shape,
           components: {
             ...inputsCustomizations,
             ...dataDisplayCustomizations,
@@ -34,6 +38,7 @@ function AppTheme(props) {
           },
         });
   }, [disableCustomTheme, themeComponents]);
+
   if (disableCustomTheme) {
     return <React.Fragment>{children}</React.Fragment>;
   }

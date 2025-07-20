@@ -6,7 +6,7 @@ import Sidebar from "./components/Sidebar";
 import Lab from "./pages/Labs";
 import Progress from "./pages/Progress";
 import AppTheme from "./theme/AppTheme"; 
-import { CssBaseline } from "@mui/material"; 
+import { CssBaseline, useTheme, useMediaQuery} from "@mui/material"; 
 import ColorModeSelect from "./theme/ColorModeSelect"; 
 import { Stack } from "@mui/material";
 import Tracks from "./pages/Tracks";
@@ -26,6 +26,9 @@ import WrekingBall from "./experiments/WrekingBall";
 import Newton from "./experiments/Newton";
 import Place from "./experiments/PlaceValue";
 import Calci from "./components/Calci";
+import "./styles/mobile-responsive.css";
+import "./styles/custom-scrollbar.css";  // Add this line
+import { useState } from "react";
 const App = () => {
   return (
     <Router>
@@ -35,31 +38,74 @@ const App = () => {
 };
 const MainLayout = () => {
   const location = useLocation();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md')); // Detect mobile devices
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const showSidebar = ["/place","/track/chemistry","/track/biology","/track/maths","/learn","/newton","/measurement", "/experiment","/labs","/torque","/wrekingball","/projectile","/track/physics","/pendulum","/inclined","/leaderboard", "/assesment", "/tracks", "/progress", "/collision", "/experiment"].some((path) =>
     location.pathname.startsWith(path)
   );
+const handleSidebarToggle = () => {
+    setSidebarOpen(!sidebarOpen);
+  };
 
-  return (
-    <div style={{ display: "flex", height: "100vh" }}>
-      {/* Sidebar - Conditionally Rendered */}
-      {showSidebar && <Sidebar />}
+  const handleSidebarClose = () => {
+    setSidebarOpen(false);
+  };
+  // ...existing code...
 
-      {/* Main Content */}
-      <div style={{ flexGrow: 1, transition: "margin 0.3s" }}>
-        <Navbar />
+return (
+  <div style={{ 
+    display: "flex", 
+    height: "100vh", 
+    flexDirection: isMobile ? "column" : "row",
+    overflow: "hidden"  // Change from "visible" to "hidden"
+  }}>
+    {/* Sidebar - Conditionally Rendered */}
+    {showSidebar && (
+      <Sidebar 
+        isMobile={isMobile} 
+        open={sidebarOpen}
+        onClose={handleSidebarClose}
+      />
+    )}
+    {/* Main Content */}
+    <div style={{ 
+      flexGrow: 1,
+      transition: "margin 0.3s",
+      overflow: "hidden",  // Change from "visible" to "hidden"
+      width: isMobile ? "100%" : "auto",
+      display: "flex",
+      flexDirection: "column"
+    }}>
+      <Navbar 
+        isMobile={isMobile} 
+        onSidebarToggle={handleSidebarToggle}
+        showSidebarToggle={showSidebar && isMobile}
+      />
 
-        <AppTheme>
-          <CssBaseline enableColorScheme />
-          <ColorModeSelect sx={{ position: "fixed", top: "1rem", right: "1rem" }} />
+      <AppTheme>
+        <CssBaseline enableColorScheme />
+        {isMobile && (
+          <ColorModeSelect sx={{ 
+            position: "fixed",
+            top: "70px",
+            right: "12px",
+            zIndex: 999,
+            display: sidebarOpen ? "none" : "block"
+          }} />
+        )}
 
+        <div style={{
+          flex: 1,
+          overflow: "auto",  // Add scrolling to this container
+          height: "calc(100vh - 64px)"  // Subtract navbar height
+        }}>
           {/* If it's Home Page, render directly without Stack */}
           {location.pathname === "/" || location.pathname === "/login" || location.pathname === "/learn"? (
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/learn" element={ <Learn />} />
               <Route path="/login" element={<SignInSide />} />
-
-
             </Routes>
           ) : (
             /* Wrap other pages inside Stack */
@@ -67,11 +113,11 @@ const MainLayout = () => {
               direction="column"
               component="main"
               sx={{
-                height: "100vh",
+                minHeight: "100%",  // Change from "100vh"
                 justifyContent: "flex-start",
                 alignItems: "center",
-                padding: 2,
-                paddingTop: "0px",
+                padding: isMobile ? 1 : 2,
+                paddingTop: "20px",  // Add some top padding
                 backgroundSize: "cover",
                 backgroundPosition: "center",
                 backgroundRepeat: "no-repeat",
@@ -81,13 +127,17 @@ const MainLayout = () => {
               <Stack
                 direction="column"
                 sx={{
-                  width: "90%",
-                  maxWidth: showSidebar ? "calc(90% - 70px)" : "1200px",
+                  width: "100%",
+                  maxWidth: "none",
                   flexGrow: 1,
+                  px: isMobile ? 1 : 2,
                 }}
               >
-                <div style={{ padding: "20px", marginTop: "64px" }}>
-                  <Routes  element= {<ProtectedRoute />}>
+                <div style={{ 
+                  padding: isMobile ? "10px" : "20px", 
+                  width: "100%",
+                }}>
+                  <Routes element={<ProtectedRoute />}>
                     <Route path="/register" element={<SignUp />} /> 
                     <Route path="/labs" element={<Lab />} />
                     <Route path="/progress" element={<Progress />} />
@@ -99,23 +149,25 @@ const MainLayout = () => {
                     <Route path="/collision" element={<CollisionExperiment />} />
                     <Route path="/pendulum" element={<Pendulum />} />
                     <Route path="/inclined" element={<Inclined />} /> 
-                     <Route path="/torque" element={ <Torque />} />  
-                     <Route path="/projectile" element={<Projectile />} />  
-                     <Route path="/wrekingball" element={<WrekingBall />} />
-                     <Route path="/newton" element={<Newton />} />
-                     <Route path="/place" element={<Place />} />
-                     <Route path="/dashboard" element={<Calci />} />
-                    
+                    <Route path="/torque" element={ <Torque />} />  
+                    <Route path="/projectile" element={<Projectile />} />  
+                    <Route path="/wrekingball" element={<WrekingBall />} />
+                    <Route path="/newton" element={<Newton />} />
+                    <Route path="/place" element={<Place />} />
+                    <Route path="/dashboard" element={<Calci />} />
                   </Routes>
                 </div>
               </Stack>
             </Stack>
           )}
-        </AppTheme>
-      </div>
+        </div>
+      </AppTheme>
     </div>
-  );
-};
+  </div>
+);
+
+// ...existing code...
+ }
 
 
 export default App;

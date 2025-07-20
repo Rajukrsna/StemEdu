@@ -1,0 +1,89 @@
+/* Custom Scrollbar Styles */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: linear-gradient(90deg, #f1f1f1 0%, #e8e8e8 100%);
+  border-radius: 10px;
+  box-shadow: inset 0 0 3px rgba(0,0,0,0.1);
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(45deg, #667eea 0%, #764ba2 100%);
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  transition: all 0.3s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(45deg, #5a6fd8 0%, #6a4190 100%);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+  transform: scale(1.1);
+}
+
+::-webkit-scrollbar-corner {
+  background: #f1f1f1;
+}
+
+/* Alternative Theme - Gaming Style */
+.gaming-scrollbar::-webkit-scrollbar {
+  width: 12px;
+}
+
+.gaming-scrollbar::-webkit-scrollbar-track {
+  background: linear-gradient(90deg, #0f0f0f 0%, #1a1a1a 100%);
+  border-radius: 6px;
+  border: 1px solid #333;
+}
+
+.gaming-scrollbar::-webkit-scrollbar-thumb {
+  background: linear-gradient(45deg, #00d4ff 0%, #ff0080 100%);
+  border-radius: 6px;
+  border: 1px solid rgba(255,255,255,0.1);
+  box-shadow: 0 0 10px rgba(0,212,255,0.3);
+}
+
+.gaming-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(45deg, #00bfff 0%, #ff1493 100%);
+  box-shadow: 0 0 15px rgba(0,212,255,0.5);
+}
+
+/* Alternative Theme - Nature Style */
+.nature-scrollbar::-webkit-scrollbar {
+  width: 10px;
+}
+
+.nature-scrollbar::-webkit-scrollbar-track {
+  background: linear-gradient(90deg, #e8f5e8 0%, #d4f1d4 100%);
+  border-radius: 8px;
+}
+
+.nature-scrollbar::-webkit-scrollbar-thumb {
+  background: linear-gradient(45deg, #4CAF50 0%, #2E7D32 100%);
+  border-radius: 8px;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.3);
+}
+
+.nature-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(45deg, #66BB6A 0%, #388E3C 100%);
+}
+
+/* Animated Scrollbar */
+.animated-scrollbar::-webkit-scrollbar-thumb {
+  background: linear-gradient(45deg, 
+    #ff6b6b 0%, 
+    #4ecdc4 25%, 
+    #45b7d1 50%, 
+    #96ceb4 75%, 
+    #ffeaa7 100%);
+  background-size: 200% 200%;
+  animation: gradient-shift 3s ease infinite;
+}
+
+@keyframes gradient-shift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
