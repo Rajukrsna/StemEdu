@@ -2,11 +2,12 @@ import * as React from 'react';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
+import { useTheme, useMediaQuery } from '@mui/material';
 import ScienceRoundedIcon from '@mui/icons-material/ScienceRounded';
 import EmojiEventsRoundedIcon from '@mui/icons-material/EmojiEventsRounded';
 import SchoolRoundedIcon from '@mui/icons-material/SchoolRounded';
 import BarChartRoundedIcon from '@mui/icons-material/BarChartRounded';
-import logo from "../logo2.svg"; // Adjust path if needed
+import logo from "../logo2.svg";
 
 const items = [
   {
@@ -36,23 +37,76 @@ const items = [
 ];
 
 export default function Content() {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+
   return (
     <Stack
-      sx={{ flexDirection: 'column', alignSelf: 'center', gap: 4, maxWidth: 450 }}
+      sx={{ 
+        flexDirection: 'column', 
+        alignSelf: 'center', 
+        gap: isMobile ? 2 : 4, // Responsive gap
+        maxWidth: isMobile ? '100%' : 450, // Full width on mobile
+        width: '100%',
+        px: isMobile ? 2 : 0 // Mobile padding
+      }}
     >
-      <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-   <img src={logo} alt="STEMhacks Logo" style={{ height: 50 }} />      </Box>
+      {/* Responsive Logo - Show on mobile too but smaller */}
+      <Box sx={{ 
+        display: 'flex', 
+        justifyContent: isMobile ? 'center' : 'flex-start',
+        mb: isMobile ? 1 : 0
+      }}>
+        <img 
+          src={logo} 
+          alt="STEMhacks Logo" 
+          style={{ 
+            height: isMobile ? 35 : 50, // Smaller on mobile
+            maxWidth: '100%' // Responsive width
+          }} 
+        />
+      </Box>
+
+      {/* Responsive Feature List */}
       {items.map((item, index) => (
-        <Stack key={index} direction="row" sx={{ gap: 2 }}>
-          {item.icon}
-          <div>
-            <Typography gutterBottom sx={{ fontWeight: 'medium' }}>
+        <Stack 
+          key={index} 
+          direction="row" 
+          sx={{ 
+            gap: isMobile ? 1.5 : 2, // Tighter gap on mobile
+            alignItems: 'flex-start' // Better alignment
+          }}
+        >
+          <Box sx={{ 
+            mt: 0.5, // Slight top margin for icon alignment
+            '& svg': {
+              fontSize: isMobile ? '1.25rem' : '1.5rem' // Smaller icons on mobile
+            }
+          }}>
+            {item.icon}
+          </Box>
+          <Box sx={{ flex: 1 }}> {/* Take remaining space */}
+            <Typography 
+              gutterBottom 
+              sx={{ 
+                fontWeight: 'medium',
+                fontSize: isMobile ? '1rem' : '1.125rem', // Responsive title
+                lineHeight: 1.3
+              }}
+            >
               {item.title}
             </Typography>
-            <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+            <Typography 
+              variant="body2" 
+              sx={{ 
+                color: 'text.secondary',
+                fontSize: isMobile ? '0.875rem' : '0.875rem',
+                lineHeight: 1.4
+              }}
+            >
               {item.description}
             </Typography>
-          </div>
+          </Box>
         </Stack>
       ))}
     </Stack>

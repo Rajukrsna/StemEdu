@@ -1,15 +1,19 @@
 import React, { useEffect, useRef, useState } from "react";
 import Matter from "matter-js";
-import { Box, Card, CardContent, Typography, Slider, Grid } from "@mui/material";
+import { Box, Card, CardContent, Typography, Slider, Grid, useTheme, useMediaQuery } from "@mui/material";
 import EndExperimentButton from "../components/EndExperiment";  
+
 const CollisionExperiment = () => {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const sceneRef = useRef(null);
   const [restitution, setRestitution] = useState(1);
   const [friction, setFriction] = useState(0);
   const [frictionAir, setFrictionAir] = useState(0);
   const [timeSpent, setTimeSpent] = useState(0);
   const [isCompleted, setIsCompleted] = useState(false);
-const experimentName= "Collision"
+  const experimentName = "Collision";
+
   useEffect(() => {
     let timer;
     if (!isCompleted) {
@@ -32,12 +36,16 @@ const experimentName= "Collision"
     engine.gravity.x = 0;
     engine.gravity.y = 0;
 
+    // Responsive canvas dimensions
+    const canvasWidth = isMobile ? 300 : 600;
+    const canvasHeight = isMobile ? 200 : 400;
+
     const render = Render.create({
       element: sceneRef.current,
       engine: engine,
       options: {
-        width: 600,
-        height: 400,
+        width: canvasWidth,
+        height: canvasHeight,
         wireframes: false,
         background: "#f4f4f4",
       },
@@ -48,14 +56,19 @@ const experimentName= "Collision"
     Runner.run(runner, engine);
 
     let balls = [];
-    let numBalls = 50;
+    let numBalls = isMobile ? 25 : 50; // Fewer balls on mobile
     for (let i = 0; i < numBalls; i++) {
-      let ball = Bodies.circle(50 + i * 10, 10, 10, {
-        restitution,
-        friction,
-        frictionAir,
-        render: { fillStyle: "blue" },
-      });
+      let ball = Bodies.circle(
+        50 + i * (isMobile ? 5 : 10), 
+        10, 
+        isMobile ? 8 : 10, // Smaller balls on mobile
+        {
+          restitution,
+          friction,
+          frictionAir,
+          render: { fillStyle: "blue" },
+        }
+      );
 
       Body.setVelocity(ball, {
         x: (Math.random() - 0.5) * 5,
@@ -66,11 +79,12 @@ const experimentName= "Collision"
     }
     Composite.add(world, balls);
 
+    // Responsive walls
     const walls = [
-      Bodies.rectangle(300, 0, 600, 20, { isStatic: true }),
-      Bodies.rectangle(300, 400, 600, 20, { isStatic: true }),
-      Bodies.rectangle(600, 200, 20, 400, { isStatic: true }),
-      Bodies.rectangle(0, 200, 20, 400, { isStatic: true }),
+      Bodies.rectangle(canvasWidth/2, 0, canvasWidth, 20, { isStatic: true }),
+      Bodies.rectangle(canvasWidth/2, canvasHeight, canvasWidth, 20, { isStatic: true }),
+      Bodies.rectangle(canvasWidth, canvasHeight/2, 20, canvasHeight, { isStatic: true }),
+      Bodies.rectangle(0, canvasHeight/2, 20, canvasHeight, { isStatic: true }),
     ];
     Composite.add(world, walls);
 
@@ -91,102 +105,147 @@ const experimentName= "Collision"
       Matter.Engine.clear(engine);
       render.canvas.remove();
     };
-  }, [restitution, friction, frictionAir, isCompleted]);
+  }, [restitution, friction, frictionAir, isCompleted, isMobile]);
 
   const handleMarkComplete = () => {
     setIsCompleted(true);
   };
 
   return (
-    <Grid container spacing={4} padding={4}>
-      {/* Experiment Canvas */}
-      <Grid item xs={8}>
-        <Card sx={{ p: 2, boxShadow: 3 }}>
-          <Typography variant="h5" align="center" gutterBottom>
-            Collision Experiment
-          </Typography>
-          <Box ref={sceneRef}></Box>
-        </Card>
-      </Grid>
-
-      {/* Instruction and Controls */}
-      <Grid item xs={4}>
-        <Card sx={{ p: 3, boxShadow: 3 }}>
-          <CardContent>
-            <Typography variant="h6" color="primary" gutterBottom>
-              Instructions
+    <Box sx={{ 
+      p: isMobile ? 1 : 4,
+      paddingTop: isMobile ? "100px" : "90px", // Navbar clearance
+      minHeight: "100vh"
+    }}>
+      <Grid container spacing={isMobile ? 2 : 4}>
+        {/* Experiment Canvas - Full width on mobile */}
+        <Grid item xs={12} md={8}>
+          <Card sx={{ p: isMobile ? 1 : 2, boxShadow: 3 }}>
+            <Typography 
+              variant={isMobile ? "h6" : "h5"} 
+              align="center" 
+              gutterBottom
+              sx={{ fontSize: isMobile ? '1.1rem' : '1.5rem' }}
+            >
+              Collision Experiment
             </Typography>
-            <Typography variant="body2" color="textSecondary">
-              This experiment simulates balls colliding inside a container. Adjust the physics properties using the sliders below.
-            </Typography>
+            <Box 
+              ref={sceneRef}
+              sx={{
+                display: 'flex',
+                justifyContent: 'center',
+                overflow: 'hidden'
+              }}
+            />
+          </Card>
+        </Grid>
 
-            {/* Restitution Slider */}
-            <Box mt={3}>
-              <Typography variant="body1" fontWeight="bold">
-                Restitution ({restitution})
+        {/* Controls - Full width on mobile, stacked below */}
+        <Grid item xs={12} md={4}>
+          <Card sx={{ p: isMobile ? 2 : 3, boxShadow: 3 }}>
+            <CardContent>
+              <Typography 
+                variant="h6" 
+                color="primary" 
+                gutterBottom
+                sx={{ fontSize: isMobile ? '1rem' : '1.25rem' }}
+              >
+                Instructions
               </Typography>
-              <Slider
-                value={restitution}
-                min={0}
-                max={1}
-                step={0.1}
-                onChange={(e, value) => setRestitution(value)}
-                color="primary"
-              />
-            </Box>
-
-            {/* Friction Slider */}
-            <Box mt={3}>
-              <Typography variant="body1" fontWeight="bold">
-                Friction ({friction})
+              <Typography 
+                variant="body2" 
+                color="textSecondary"
+                sx={{ fontSize: isMobile ? '0.875rem' : '0.875rem' }}
+              >
+                This experiment simulates balls colliding inside a container. Adjust the physics properties using the sliders below.
               </Typography>
-              <Slider
-                value={friction}
-                min={0}
-                max={1}
-                step={0.1}
-                onChange={(e, value) => setFriction(value)}
-                color="secondary"
-              />
-            </Box>
 
-            {/* Air Friction Slider */}
-            <Box mt={3}>
-              <Typography variant="body1" fontWeight="bold">
-                Air Friction ({frictionAir})
-              </Typography>
-              <Slider
-                value={frictionAir}
-                min={0}
-                max={1}
-                step={0.1}
-                onChange={(e, value) => setFrictionAir(value)}
-                color="success"
-              />
-            </Box>
+              {/* Restitution Slider */}
+              <Box mt={isMobile ? 2 : 3}>
+                <Typography 
+                  variant="body1" 
+                  fontWeight="bold"
+                  sx={{ fontSize: isMobile ? '0.875rem' : '1rem' }}
+                >
+                  Restitution ({restitution})
+                </Typography>
+                <Slider
+                  value={restitution}
+                  min={0}
+                  max={1}
+                  step={0.1}
+                  onChange={(e, value) => setRestitution(value)}
+                  color="primary"
+                  sx={{ mt: 1 }}
+                />
+              </Box>
 
-            {/* Time Spent */}
-            <Box mt={3}>
-              <Typography variant="body1" fontWeight="bold">
-                Time Spent: {timeSpent} seconds
-              </Typography>
-            </Box>
+              {/* Friction Slider */}
+              <Box mt={isMobile ? 2 : 3}>
+                <Typography 
+                  variant="body1" 
+                  fontWeight="bold"
+                  sx={{ fontSize: isMobile ? '0.875rem' : '1rem' }}
+                >
+                  Friction ({friction})
+                </Typography>
+                <Slider
+                  value={friction}
+                  min={0}
+                  max={1}
+                  step={0.1}
+                  onChange={(e, value) => setFriction(value)}
+                  color="secondary"
+                  sx={{ mt: 1 }}
+                />
+              </Box>
 
-            {/* Mark as Complete Button */}
-            {/* End Experiment Button */}
-            <Box mt={3}>
-              <EndExperimentButton
-                experimentName={experimentName}
-                timeSpent={timeSpent}
-                route="/collision"
-                track="physics"
-                onEnd={handleMarkComplete}
-              />
-            </Box>
-          </CardContent>
-        </Card>
+              {/* Air Friction Slider */}
+              <Box mt={isMobile ? 2 : 3}>
+                <Typography 
+                  variant="body1" 
+                  fontWeight="bold"
+                  sx={{ fontSize: isMobile ? '0.875rem' : '1rem' }}
+                >
+                  Air Friction ({frictionAir})
+                </Typography>
+                <Slider
+                  value={frictionAir}
+                  min={0}
+                  max={1}
+                  step={0.1}
+                  onChange={(e, value) => setFrictionAir(value)}
+                  color="success"
+                  sx={{ mt: 1 }}
+                />
+              </Box>
+
+              {/* Time Spent */}
+              <Box mt={isMobile ? 2 : 3}>
+                <Typography 
+                  variant="body1" 
+                  fontWeight="bold"
+                  sx={{ fontSize: isMobile ? '0.875rem' : '1rem' }}
+                >
+                  Time Spent: {timeSpent} seconds
+                </Typography>
+              </Box>
+
+              {/* End Experiment Button */}
+              <Box mt={isMobile ? 2 : 3}>
+                <EndExperimentButton
+                  experimentName={experimentName}
+                  timeSpent={timeSpent}
+                  route="/collision"
+                  track="physics"
+                  onEnd={handleMarkComplete}
+                />
+              </Box>
+            </CardContent>
+          </Card>
+        </Grid>
       </Grid>
-    </Grid>
+    </Box>
   );
 };
 

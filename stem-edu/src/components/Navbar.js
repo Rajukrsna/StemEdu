@@ -66,14 +66,16 @@ const Navbar = ({  isMobile, onSidebarToggle, showSidebarToggle  }) => {
 
   return (
     <>
-      <AppBar 
-        position="fixed" 
-        sx={{ 
-          backgroundColor: "#0D0D2B", 
-          zIndex: 1201, 
-          height: isMobileScreen ? '56px' : '64px'
-        }}
-      >
+   <AppBar 
+  position="fixed" 
+  sx={{
+    backgroundColor: theme.palette.mode === 'dark' ? '#1e1e1e' : '#ffffff',
+    color: theme.palette.mode === 'dark' ? '#ffffff' : '#000000',
+    boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+    zIndex: 1100
+  }}
+>
+      
         <Toolbar 
           sx={{ 
             display: "flex", 
@@ -105,13 +107,15 @@ const Navbar = ({  isMobile, onSidebarToggle, showSidebarToggle  }) => {
               flexShrink: 0
             }}
           >
-            <img 
-              src={logo} 
-              alt="STEMhacks Logo" 
-              style={{ 
-                height: isMobileScreen ? 35 : 50 
-              }} 
-            />
+           <img 
+  src={logo} 
+  alt="BrightMinds Logo" 
+  style={{ 
+    height: isMobile ? 45 : 60, // Increased from default size
+    width: 'auto', // Maintain aspect ratio
+    maxWidth: '200px' // Prevent it from being too wide
+  }} 
+/>
             {!isMobileScreen && (
               <Typography variant="h6" sx={{ color: "#fff", fontWeight: "bold" }}>
               BrightMindsSTEM

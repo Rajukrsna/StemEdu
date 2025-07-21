@@ -27,15 +27,15 @@
           font-family="'SF Pro Display', 'Helvetica', sans-serif" 
           font-size="22" 
           font-weight="600" 
-          fill="white">
+          fill="url(#cleanGrad)">
         BrightMinds
     </text>
-    <text x="80" y="52" 
+    <text x="80" y="55" 
           font-family="'SF Pro Display', 'Helvetica', sans-serif" 
-          font-size="12" 
-          font-weight="400" 
+          font-size="16" 
+          font-weight="700" 
           fill="url(#cleanGrad)" 
-          letter-spacing="1px">
+          letter-spacing="1.5px">
         STEM EDUCATION
     </text>
 </svg>

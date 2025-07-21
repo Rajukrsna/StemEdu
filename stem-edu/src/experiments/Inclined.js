@@ -1,15 +1,20 @@
 import React, { useEffect, useRef, useState } from "react";
 import Matter from "matter-js";
-import { Box, Card, CardContent, Typography, Grid, Slider } from "@mui/material";
+import { Box, Card, CardContent, Typography, Grid, Slider, useTheme, useMediaQuery } from "@mui/material";
 import EndExperimentButton from "../components/EndExperiment";
+
 const InclinedPlaneExperiment = () => {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  
   const sceneRef = useRef(null);
   const [timeSpent, setTimeSpent] = useState(0);
   const [isCompleted, setIsCompleted] = useState(false);
-  const [angle, setAngle] = useState(30); // Incline angle in degrees
+  const [angle, setAngle] = useState(30);
   const [velocity, setVelocity] = useState(0);
   const [position, setPosition] = useState({ x: 200, y: 100 });
-const experimentName = "Inclined Plane";
+  const experimentName = "Inclined Plane";
+
   useEffect(() => {
     let timer;
     if (!isCompleted) {
@@ -30,26 +35,55 @@ const experimentName = "Inclined Plane";
     const engine = Engine.create();
     const world = engine.world;
 
+    // Responsive canvas dimensions
+    const canvasWidth = isMobile ? 320 : 600;
+    const canvasHeight = isMobile ? 240 : 400;
+
     const render = Render.create({
       element: sceneRef.current,
       engine: engine,
-      options: { width: 600, height: 400, wireframes: false, background: "#f4f4f4" },
+      options: { 
+        width: canvasWidth, 
+        height: canvasHeight, 
+        wireframes: false, 
+        background: "#f4f4f4" 
+      },
     });
 
     Render.run(render);
     const runner = Runner.create();
     Runner.run(runner, engine);
 
-    // Ground and Inclined Plane
-    const ground = Bodies.rectangle(300, 390, 600, 20, { isStatic: true });
-    const incline = Bodies.rectangle(300, 250, 300, 20, { isStatic: true, angle: (Math.PI / 180) * angle });
+    // Responsive physics objects
+    const ground = Bodies.rectangle(
+      canvasWidth/2, 
+      canvasHeight - 10, 
+      canvasWidth, 
+      20, 
+      { isStatic: true }
+    );
+    
+    const incline = Bodies.rectangle(
+      canvasWidth/2, 
+      canvasHeight * 0.625, 
+      canvasWidth * 0.5, 
+      20, 
+      { isStatic: true, angle: (Math.PI / 180) * angle }
+    );
 
-    // Block with friction & restitution
-    const block = Bodies.rectangle(200, 100, 40, 40, {
-      restitution: 0.2,
-      friction: 0.05,
-      density: 0.01,
-    });
+    // Block with responsive size
+    const blockSize = isMobile ? 30 : 40;
+    const block = Bodies.rectangle(
+      canvasWidth * 0.33, 
+      canvasHeight * 0.25, 
+      blockSize, 
+      blockSize, 
+      {
+        restitution: 0.2,
+        friction: 0.05,
+        density: 0.01,
+      }
+    );
 
     Composite.add(world, [ground, incline, block]);
 
@@ -75,89 +109,126 @@ const experimentName = "Inclined Plane";
       Matter.Engine.clear(engine);
       render.canvas.remove();
     };
-  }, [isCompleted, angle]);
+  }, [isCompleted, angle, isMobile]);
+
   const handleMarkComplete = () => {
     setIsCompleted(true);
   };
+
   return (
-    <Grid container spacing={4} padding={4}>
-      {/* Simulation Section */}
-      <Grid item xs={8}>
-        <Card sx={{ p: 2, boxShadow: 3 }}>
-          <Typography variant="h5" align="center" gutterBottom>
-            Inclined Plane Experiment
-          </Typography>
-          <Box ref={sceneRef} />
-        </Card>
-      </Grid>
-
-      {/* Controls & Info Section */}
-      <Grid item xs={4}>
-        <Card sx={{ p: 3, boxShadow: 3 }}>
-          <CardContent>
-            <Typography variant="h6" color="primary" gutterBottom>
-              Instructions
+    <Box sx={{ 
+      p: isMobile ? 1 : 4,
+      paddingTop: isMobile ? "100px" : "90px", // Navbar clearance
+      minHeight: "100vh"
+    }}>
+      <Grid container spacing={isMobile ? 2 : 4}>
+        {/* Simulation Section - Full width on mobile */}
+        <Grid item xs={12} md={8}>
+          <Card sx={{ p: isMobile ? 1 : 2, boxShadow: 3 }}>
+            <Typography 
+              variant={isMobile ? "h6" : "h5"} 
+              align="center" 
+              gutterBottom
+              sx={{ fontSize: isMobile ? '1.1rem' : '1.5rem' }}
+            >
+              Inclined Plane Experiment
             </Typography>
-            <Typography variant="body2" color="textSecondary">
-              Drag the block to any position and release it to observe how it moves down the plane.
-              You can also adjust the incline angle.
-            </Typography>
+            <Box 
+              ref={sceneRef} 
+              sx={{
+                display: 'flex',
+                justifyContent: 'center',
+                overflow: 'hidden'
+              }}
+            />
+          </Card>
+        </Grid>
 
-            {/* Incline Angle Slider */}
-            <Box mt={3}>
-              <Typography variant="body1" fontWeight="bold">
-                Adjust Incline Angle ({angle}°)
+        {/* Controls & Info Section - Full width on mobile, stacked below */}
+        <Grid item xs={12} md={4}>
+          <Card sx={{ p: isMobile ? 2 : 3, boxShadow: 3 }}>
+            <CardContent>
+              <Typography 
+                variant="h6" 
+                color="primary" 
+                gutterBottom
+                sx={{ fontSize: isMobile ? '1rem' : '1.25rem' }}
+              >
+                Instructions
               </Typography>
-              <Slider
-                value={angle}
-                min={10}
-                max={60}
-                step={1}
-                valueLabelDisplay="auto"
-                onChange={(e, newValue) => setAngle(newValue)}
-              />
-            </Box>
+              <Typography 
+                variant="body2" 
+                color="textSecondary"
+                sx={{ fontSize: isMobile ? '0.875rem' : '0.875rem' }}
+              >
+                Drag the block to any position and release it to observe how it moves down the plane.
+                You can also adjust the incline angle.
+              </Typography>
 
-            {/* Time Spent */}
-            <Box mt={3}>
-              <Typography variant="body1" fontWeight="bold">
-                Time Spent: {timeSpent} seconds
-              </Typography>
-            </Box>
+              {/* Incline Angle Slider */}
+              <Box mt={isMobile ? 2 : 3}>
+                <Typography 
+                  variant="body1" 
+                  fontWeight="bold"
+                  sx={{ fontSize: isMobile ? '0.875rem' : '1rem' }}
+                >
+                  Adjust Incline Angle ({angle}°)
+                </Typography>
+                <Slider
+                  value={angle}
+                  min={10}
+                  max={60}
+                  step={1}
+                  valueLabelDisplay="auto"
+                  onChange={(e, newValue) => setAngle(newValue)}
+                  sx={{ mt: 1 }}
+                />
+              </Box>
 
-            {/* Real-time Data */}
-            <Box mt={2}>
-              <Typography variant="body2" color="textSecondary">
-                Velocity: {velocity} m/s
-              </Typography>
-              <Typography variant="body2" color="textSecondary">
-                Position: X = {position.x}, Y = {position.y}
-              </Typography>
-            </Box>
+              {/* Real-time Data */}
+              <Box mt={isMobile ? 2 : 3}>
+                <Typography 
+                  variant="body2" 
+                  color="textSecondary"
+                  sx={{ fontSize: isMobile ? '0.8rem' : '0.875rem' }}
+                >
+                  Velocity: {velocity} m/s
+                </Typography>
+                <Typography 
+                  variant="body2" 
+                  color="textSecondary"
+                  sx={{ fontSize: isMobile ? '0.8rem' : '0.875rem' }}
+                >
+                  Position: X = {position.x}, Y = {position.y}
+                </Typography>
+              </Box>
 
-            {/* Buttons */}
-             {/* Time Spent */}
-             <Box mt={3}>
-              <Typography variant="body1" fontWeight="bold">
-                Time Spent: {timeSpent} seconds
-              </Typography>
-            </Box>
+              {/* Time Spent */}
+              <Box mt={isMobile ? 2 : 3}>
+                <Typography 
+                  variant="body1" 
+                  fontWeight="bold"
+                  sx={{ fontSize: isMobile ? '0.875rem' : '1rem' }}
+                >
+                  Time Spent: {timeSpent} seconds
+                </Typography>
+              </Box>
 
-            {/* Mark as Complete Button */}
-            {/* End Experiment Button */}
-            <Box mt={3}>
-              <EndExperimentButton
-                experimentName={experimentName}
-                timeSpent={timeSpent}
-                route="/torque"
-                track="physics" 
-                onEnd={handleMarkComplete}
-              />
-            </Box>
-          </CardContent>
-        </Card>
+              {/* End Experiment Button */}
+              <Box mt={isMobile ? 2 : 3}>
+                <EndExperimentButton
+                  experimentName={experimentName}
+                  timeSpent={timeSpent}
+                  route="/torque"
+                  track="physics" 
+                  onEnd={handleMarkComplete}
+                />
+              </Box>
+            </CardContent>
+          </Card>
+        </Grid>
       </Grid>
-    </Grid>
+    </Box>
   );
 };
 

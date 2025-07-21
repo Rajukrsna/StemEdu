@@ -77,11 +77,7 @@ return (
       display: "flex",
       flexDirection: "column"
     }}>
-      <Navbar 
-        isMobile={isMobile} 
-        onSidebarToggle={handleSidebarToggle}
-        showSidebarToggle={showSidebar && isMobile}
-      />
+      
 
       <AppTheme>
         <CssBaseline enableColorScheme />
@@ -101,11 +97,13 @@ return (
           height: "calc(100vh - 64px)"  // Subtract navbar height
         }}>
           {/* If it's Home Page, render directly without Stack */}
-          {location.pathname === "/" || location.pathname === "/login" || location.pathname === "/learn"? (
+          {location.pathname === "/" || location.pathname === "/login" || location.pathname === "/learn"|| location.pathname === "/register" ? (
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/learn" element={ <Learn />} />
               <Route path="/login" element={<SignInSide />} />
+              <Route path="/register" element={<SignUp />} />
+
             </Routes>
           ) : (
             /* Wrap other pages inside Stack */
@@ -123,6 +121,7 @@ return (
                 backgroundRepeat: "no-repeat",
               }}
             >
+           
               {/* Content Wrapper with Controlled Width */}
               <Stack
                 direction="column"
@@ -137,15 +136,20 @@ return (
                   padding: isMobile ? "10px" : "20px", 
                   width: "100%",
                 }}>
+                     <Navbar 
+        isMobile={isMobile} 
+        onSidebarToggle={handleSidebarToggle}
+        showSidebarToggle={showSidebar && isMobile}
+      />
                   <Routes element={<ProtectedRoute />}>
-                    <Route path="/register" element={<SignUp />} /> 
+
                     <Route path="/labs" element={<Lab />} />
                     <Route path="/progress" element={<Progress />} />
                     <Route path="/tracks" element={<Tracks />} />
                     <Route path="/track/:trackName" element={<TracksDetails />} />
                     <Route path="/assesment" element={<Assesment />} />
                     <Route path="/leaderboard" element={<Leaderboard />} /> 
-                    <Route path="/experiment" element={<Experiment />} /> 
+                    <Route path="/mass" element={<Experiment />} /> 
                     <Route path="/collision" element={<CollisionExperiment />} />
                     <Route path="/pendulum" element={<Pendulum />} />
                     <Route path="/inclined" element={<Inclined />} /> 

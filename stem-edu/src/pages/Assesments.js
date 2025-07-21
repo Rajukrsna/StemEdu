@@ -309,16 +309,18 @@ Organic_Chemistry_Reactions: [
     <Box 
      sx={{ 
     p: isMobile ? 2 : 4,
+    paddingTop: isMobile ? "1660px" : "110px",
     maxWidth: '100%',
     minHeight: '100vh',
-   
+         
+
   }}
       className={isMobile ? "mobile-full-width" : ""}
     >
       <ToastContainer />
       
       {/* Header Section */}
-      <Box sx={{ mb: 4, textAlign: 'center' }}>
+      <Box sx={{ mb: 4,paddingTop: isMobile ? "120px" : "10px", textAlign: 'center' }}>
         <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 2, mb: 2 }}>
           <BookOpen size={isMobile ? 24 : 32} color="#2196F3" />
           <Typography 

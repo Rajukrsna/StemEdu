@@ -1,25 +1,28 @@
 import * as React from 'react';
-import CssBaseline from '@mui/material/CssBaseline';
 import Stack from '@mui/material/Stack';
+import CssBaseline from '@mui/material/CssBaseline';
+import { useTheme } from '@mui/material/styles';
+import { useMediaQuery } from '@mui/material';
 import AppTheme from '../theme/AppTheme';
-import ColorModeSelect from '../theme/ColorModeSelect';
 import SignInCard from '../components/SignInCard';
 import Content from '../components/Content';
 
 export default function SignInSide(props) {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+
   return (
     <AppTheme {...props}>
       <CssBaseline enableColorScheme />
-      <ColorModeSelect sx={{ position: 'fixed', top: '1rem', right: '1rem' }} />
+      
       <Stack
         direction="column"
         component="main"
         sx={[
           {
             justifyContent: 'center',
-            height: 'calc((1 - var(--template-frame-height, 0)) * 100%)',
-            marginTop: 'max(40px - var(--template-frame-height, 0px), 0px)',
-            minHeight: '100%',
+            minHeight: '100vh', // Remove fixed height, keep only minHeight
+            overflow: 'auto' // Allow scrolling
           },
           (theme) => ({
             '&::before': {
@@ -40,27 +43,27 @@ export default function SignInSide(props) {
         ]}
       >
         <Stack
-          direction={{ xs: 'column-reverse', md: 'row' }}
+          direction={{ xs: 'column', md: 'row' }}
           sx={{
             justifyContent: 'center',
-            gap: { xs: 6, sm: 12 },
-            p: 2,
+            alignItems: 'center',
+            gap: { xs: 2, sm: 4, md: 12 },
+            p: { xs: 2, sm: 3, md: 4 },
             mx: 'auto',
-            paddingTop:"60px",
+            maxWidth: '1200px',
+            width: '100%',
+            minHeight: isMobile ? 'auto' : '100vh', // Auto height on mobile for scrolling
+            // Mobile-specific adjustments
+            ...(isMobile && {
+              paddingTop: '2rem',
+              paddingBottom: '2rem',
+              minHeight: 'calc(100vh - 4rem)', // Account for padding
+              overflow: 'visible' // Ensure content can expand
+            })
           }}
         >
-          <Stack
-            direction={{ xs: 'column-reverse', md: 'row' }}
-            sx={{
-              justifyContent: 'center',
-              gap: { xs: 6, sm: 12 },
-              p: { xs: 2, sm: 4 },
-              m: 'auto',
-            }}
-          >
-            <Content />
-            <SignInCard />
-          </Stack>
+          
+          <SignInCard />
         </Stack>
       </Stack>
     </AppTheme>

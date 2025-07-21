@@ -12,12 +12,13 @@ import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
 import MuiCard from '@mui/material/Card';
-import { styled } from '@mui/material/styles';
+import { styled, useTheme } from '@mui/material/styles';
+import { useMediaQuery } from '@mui/material'; // Add this import
 import AppTheme from '../theme/AppTheme';
-import ColorModeSelect from '../theme/ColorModeSelect';
 import { GoogleIcon, FacebookIcon, SitemarkIcon } from '../components/CustomIcons';
 import { useNavigate } from "react-router-dom";
-import axios from "axios"; // ✅ Import axios 
+import axios from "axios";
+
 const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
 const Card = styled(MuiCard)(({ theme }) => ({
@@ -30,6 +31,13 @@ const Card = styled(MuiCard)(({ theme }) => ({
   margin: 'auto',
   boxShadow:
     'hsla(220, 30%, 5%, 0.05) 0px 5px 15px 0px, hsla(220, 25%, 10%, 0.05) 0px 15px 35px -5px',
+  borderRadius: theme.spacing(2), // Add rounded corners
+  [theme.breakpoints.down('md')]: { // Mobile responsive
+    padding: theme.spacing(3),
+    margin: theme.spacing(2),
+    gap: theme.spacing(1.5),
+    maxWidth: 'calc(100vw - 48px)',
+  },
   [theme.breakpoints.up('sm')]: {
     width: '450px',
   },
@@ -39,12 +47,18 @@ const Card = styled(MuiCard)(({ theme }) => ({
   }),
 }));
 
+// ✅ FIXED: Make container scrollable
 const SignUpContainer = styled(Stack)(({ theme }) => ({
-  height: 'calc((1 - var(--template-frame-height, 0)) * 100dvh)',
-  minHeight: '100%',
+  minHeight: '100vh', // Changed from fixed height to minHeight
   padding: theme.spacing(2),
+  overflow: 'auto', // Enable scrolling
   [theme.breakpoints.up('sm')]: {
     padding: theme.spacing(4),
+  },
+  [theme.breakpoints.down('md')]: { // Mobile specific
+    padding: theme.spacing(1),
+    paddingTop: theme.spacing(2),
+    paddingBottom: theme.spacing(2),
   },
   '&::before': {
     content: '""',
@@ -63,14 +77,18 @@ const SignUpContainer = styled(Stack)(({ theme }) => ({
 }));
 
 export default function SignUp(props) {
-  const navigate = useNavigate(); // ✅ Fix navigation
+  const navigate = useNavigate();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md')); // Add mobile detection
+  
   const [emailError, setEmailError] = React.useState(false);
   const [emailErrorMessage, setEmailErrorMessage] = React.useState('');
   const [passwordError, setPasswordError] = React.useState(false);
   const [passwordErrorMessage, setPasswordErrorMessage] = React.useState('');
   const [nameError, setNameError] = React.useState(false);
   const [nameErrorMessage, setNameErrorMessage] = React.useState('');
-const [sellerData, setSellerData] = React.useState({ name: "", email: "", password: "" });  
+  const [sellerData, setSellerData] = React.useState({ name: "", email: "", password: "" });
+
   const validateInputs = () => {
     const email = document.getElementById('email');
     const password = document.getElementById('password');
@@ -78,7 +96,7 @@ const [sellerData, setSellerData] = React.useState({ name: "", email: "", passwo
 
     let isValid = true;
 
-    if (!email.value ) {// !/\S+@\S+\.\S+/.test(email.value)
+    if (!email.value) {
       setEmailError(true);
       setEmailErrorMessage('Please enter a valid email address.');
       isValid = false;
@@ -87,7 +105,7 @@ const [sellerData, setSellerData] = React.useState({ name: "", email: "", passwo
       setEmailErrorMessage('');
     }
 
-    if (!password.value ) {
+    if (!password.value) {
       setPasswordError(true);
       setPasswordErrorMessage('Password must be at least 6 characters long.');
       isValid = false;
@@ -107,53 +125,64 @@ const [sellerData, setSellerData] = React.useState({ name: "", email: "", passwo
 
     return isValid;
   };
+
   const handleChange = (e) => {
     setSellerData({ ...sellerData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async(event) => {
-   // if (nameError || emailError || passwordError) {
-   //   event.preventDefault();
-   //   return;
-   // }
-   event.preventDefault();
-   try {
-    const response = await axios.post(`${backendUrl}/authRoute/register`, {
-      name: sellerData.name,
-      email: sellerData.email,
-      password: sellerData.password,
-    });
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    try {
+      const response = await axios.post(`${backendUrl}/authRoute/register`, {
+        name: sellerData.name,
+        email: sellerData.email,
+        password: sellerData.password,
+      });
 
-    if (response.data) {
-      console.log("User registered successfully.");
-      navigate("/login"); // ✅ Fix navigation function
-    } 
-  } catch (error) {
-   console.log("Server error. Please try again later.");
-  }
-};
-  
+      if (response.data) {
+        console.log("User registered successfully.");
+        navigate("/login");
+      }
+    } catch (error) {
+      console.log("Server error. Please try again later.");
+    }
+  };
+
   return (
     <AppTheme {...props}>
       <CssBaseline enableColorScheme />
-      <ColorModeSelect sx={{ position: 'fixed', top: '1rem', right: '1rem' }} />
-      <SignUpContainer direction="column" justifyContent="space-between">
+
+      <SignUpContainer 
+        direction="column" 
+        justifyContent={isMobile ? "flex-start" : "space-between"} // ✅ Better mobile alignment
+      >
         <Card variant="outlined">
           <SitemarkIcon />
           <Typography
             component="h1"
             variant="h4"
-            sx={{ width: '100%', fontSize: 'clamp(2rem, 10vw, 2.15rem)' }}
+            sx={{ 
+              width: '100%', 
+              fontSize: isMobile ? 'clamp(1.5rem, 8vw, 2rem)' : 'clamp(2rem, 10vw, 2.15rem)', // Responsive
+              textAlign: 'center',
+              mb: isMobile ? 1 : 0
+            }}
           >
             Sign up
           </Typography>
           <Box
             component="form"
             onSubmit={handleSubmit}
-            sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}
+            sx={{ 
+              display: 'flex', 
+              flexDirection: 'column', 
+              gap: isMobile ? 1.5 : 2 // Responsive gap
+            }}
           >
             <FormControl>
-              <FormLabel htmlFor="name">Full name</FormLabel>
+              <FormLabel htmlFor="name" sx={{ fontSize: isMobile ? '0.875rem' : '1rem' }}>
+                Full name
+              </FormLabel>
               <TextField
                 autoComplete="name"
                 name="name"
@@ -165,10 +194,13 @@ const [sellerData, setSellerData] = React.useState({ name: "", email: "", passwo
                 onChange={handleChange}
                 helperText={nameErrorMessage}
                 color={nameError ? 'error' : 'primary'}
+                size={isMobile ? "small" : "medium"} // Responsive size
               />
             </FormControl>
             <FormControl>
-              <FormLabel htmlFor="email">Email</FormLabel>
+              <FormLabel htmlFor="email" sx={{ fontSize: isMobile ? '0.875rem' : '1rem' }}>
+                Email
+              </FormLabel>
               <TextField
                 required
                 fullWidth
@@ -180,11 +212,14 @@ const [sellerData, setSellerData] = React.useState({ name: "", email: "", passwo
                 error={emailError}
                 onChange={handleChange}
                 helperText={emailErrorMessage}
-                color={passwordError ? 'error' : 'primary'}
+                color={emailError ? 'error' : 'primary'}
+                size={isMobile ? "small" : "medium"}
               />
             </FormControl>
             <FormControl>
-              <FormLabel htmlFor="password">Password</FormLabel>
+              <FormLabel htmlFor="password" sx={{ fontSize: isMobile ? '0.875rem' : '1rem' }}>
+                Password
+              </FormLabel>
               <TextField
                 required
                 fullWidth
@@ -198,30 +233,52 @@ const [sellerData, setSellerData] = React.useState({ name: "", email: "", passwo
                 error={passwordError}
                 helperText={passwordErrorMessage}
                 color={passwordError ? 'error' : 'primary'}
+                size={isMobile ? "small" : "medium"}
               />
             </FormControl>
             <FormControlLabel
-              control={<Checkbox value="allowExtraEmails" color="primary" />}
-              label="I want to receive updates via email."
+              control={<Checkbox value="allowExtraEmails" color="primary" size={isMobile ? "small" : "medium"} />}
+              label={
+                <Typography sx={{ fontSize: isMobile ? '0.875rem' : '1rem' }}>
+                  I want to receive updates via email.
+                </Typography>
+              }
             />
             <Button
               type="submit"
               fullWidth
               variant="contained"
               onClick={validateInputs}
+              size={isMobile ? "medium" : "large"}
+              sx={{
+                py: isMobile ? 1.2 : 1.5,
+                fontSize: isMobile ? '0.875rem' : '1rem',
+                fontWeight: 'bold'
+              }}
             >
               Sign up
             </Button>
           </Box>
-          <Divider>
-            <Typography sx={{ color: 'text.secondary' }}>or</Typography>
+          <Divider sx={{ my: isMobile ? 1.5 : 2 }}>
+            <Typography sx={{ 
+              color: 'text.secondary',
+              fontSize: isMobile ? '0.75rem' : '0.875rem'
+            }}>
+              or
+            </Typography>
           </Divider>
-          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+          <Box sx={{ display: 'flex', flexDirection: 'column', gap: isMobile ? 1.5 : 2 }}>
             <Button
               fullWidth
               variant="outlined"
               onClick={() => alert('Sign up with Google')}
               startIcon={<GoogleIcon />}
+              size={isMobile ? "medium" : "large"}
+              sx={{
+                py: isMobile ? 1 : 1.2,
+                fontSize: isMobile ? '0.875rem' : '1rem',
+                textTransform: 'none'
+              }}
             >
               Sign up with Google
             </Button>
@@ -230,15 +287,40 @@ const [sellerData, setSellerData] = React.useState({ name: "", email: "", passwo
               variant="outlined"
               onClick={() => alert('Sign up with Facebook')}
               startIcon={<FacebookIcon />}
+              size={isMobile ? "medium" : "large"}
+              sx={{
+                py: isMobile ? 1 : 1.2,
+                fontSize: isMobile ? '0.875rem' : '1rem',
+                textTransform: 'none'
+              }}
             >
               Sign up with Facebook
             </Button>
-            <Typography sx={{ textAlign: 'center' }}>
+
+            <Typography sx={{
+              textAlign: 'center',
+              mt: isMobile ? 1.5 : 2,
+              fontSize: isMobile ? '0.875rem' : '1rem'
+            }}>
               Already have an account?{' '}
               <Link
-                href="/material-ui/getting-started/templates/sign-in/"
+                component="button"
+                type="button"
+                onClick={() => navigate("/login")}
                 variant="body2"
-                sx={{ alignSelf: 'center' }}
+                sx={{
+                  alignSelf: 'center',
+                  textDecoration: 'none',
+                  fontWeight: 'bold',
+                  color: 'primary.main',
+                  background: 'none',
+                  border: 'none',
+                  cursor: 'pointer',
+                  fontSize: isMobile ? '0.875rem' : '1rem',
+                  '&:hover': {
+                    textDecoration: 'underline'
+                  }
+                }}
               >
                 Sign in
               </Link>

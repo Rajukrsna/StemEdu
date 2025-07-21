@@ -1,9 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
 import Matter from "matter-js";
-import { Box, Card, CardContent, Typography, Grid } from "@mui/material";
+import { Box, Card, CardContent, Typography, Grid, useTheme, useMediaQuery } from "@mui/material";
 import EndExperimentButton from "../components/EndExperiment";
 
 const NewtonCradleExperiment = () => {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  
   const sceneRef = useRef(null);
   const [timeSpent, setTimeSpent] = useState(0);
   const [isCompleted, setIsCompleted] = useState(false);
@@ -30,22 +33,31 @@ const NewtonCradleExperiment = () => {
     const engine = Engine.create();
     const world = engine.world;
 
+    // Responsive canvas dimensions
+    const canvasWidth = isMobile ? 320 : 600;
+    const canvasHeight = isMobile ? 240 : 400;
+
     const render = Render.create({
       element: sceneRef.current,
       engine: engine,
-      options: { width: 600, height: 400, wireframes: false, background: "#f4f4f4" },
+      options: { 
+        width: canvasWidth, 
+        height: canvasHeight, 
+        wireframes: false, 
+        background: "#f4f4f4" 
+      },
     });
 
     Render.run(render);
     const runner = Runner.create();
     Runner.run(runner, engine);
 
-    // Random color function (Moved Above)
+    // Random color function
     const getRandomColor = () => {
       return `#${Math.floor(Math.random() * 16777215).toString(16)}`;
     };
 
-    // Create Newton's Cradle
+    // Responsive Newton's Cradle
     const createNewtonsCradle = (x, y, count, size, length) => {
       const cradle = Composite.create({ label: "Newtons Cradle" });
 
@@ -58,7 +70,7 @@ const NewtonCradleExperiment = () => {
           frictionAir: 0,
           slop: size * 0.02,
           label: "Ball",
-          render: { fillStyle: getRandomColor() }, // Now it works correctly
+          render: { fillStyle: getRandomColor() },
         });
 
         const string = Constraint.create({
@@ -71,12 +83,21 @@ const NewtonCradleExperiment = () => {
       return cradle;
     };
 
+    // Responsive cradle parameters
+    const cradleX = isMobile ? canvasWidth * 0.3 : 280;
+    const cradleY = isMobile ? 40 : 100;
+    const ballSize = isMobile ? 20 : 30;
+    const ballCount = isMobile ? 4 : 5; // Fewer balls on mobile
+    const stringLength = isMobile ? 120 : 200;
+
     // Add Newton's Cradle
-    const cradle = createNewtonsCradle(280, 100, 5, 30, 200);
+    const cradle = createNewtonsCradle(cradleX, cradleY, ballCount, ballSize, stringLength);
     Composite.add(world, cradle);
 
-    // Pull first ball to the left
-    Matter.Body.translate(cradle.bodies[0], { x: -180, y: -100 });
+    // Pull first ball to the left - scaled for mobile
+    const pullX = isMobile ? -100 : -180;
+    const pullY = isMobile ? -60 : -100;
+    Matter.Body.translate(cradle.bodies[0], { x: pullX, y: pullY });
 
     // Change color on collision
     Events.on(engine, "collisionStart", (event) => {
@@ -107,56 +128,112 @@ const NewtonCradleExperiment = () => {
       Matter.Engine.clear(engine);
       render.canvas.remove();
     };
-  }, [isCompleted]);
+  }, [isCompleted, isMobile]);
 
   const handleMarkComplete = () => {
     setIsCompleted(true);
   };
 
   return (
-    <Grid container spacing={4} padding={4}>
-      {/* Simulation Section */}
-      <Grid item xs={8}>
-        <Card sx={{ p: 2, boxShadow: 3 }}>
-          <Typography variant="h5" align="center" gutterBottom>
-            Newton's Cradle Experiment
-          </Typography>
-          <Box ref={sceneRef} />
-        </Card>
-      </Grid>
-
-      {/* Controls & Info Section */}
-      <Grid item xs={4}>
-        <Card sx={{ p: 3, boxShadow: 3 }}>
-          <CardContent>
-            <Typography variant="h6" color="primary" gutterBottom>
-              Instructions
+    <Box sx={{ 
+      p: isMobile ? 1 : 4,
+      paddingTop: isMobile ? "100px" : "90px", // Navbar clearance
+      minHeight: "100vh"
+    }}>
+      <Grid container spacing={isMobile ? 2 : 4}>
+        {/* Simulation Section - Full width on mobile */}
+        <Grid item xs={12} md={8}>
+          <Card sx={{ p: isMobile ? 1 : 2, boxShadow: 3 }}>
+            <Typography 
+              variant={isMobile ? "h6" : "h5"} 
+              align="center" 
+              gutterBottom
+              sx={{ fontSize: isMobile ? '1.1rem' : '1.5rem' }}
+            >
+              ⚖️ Newton's Cradle Experiment
             </Typography>
-            <Typography variant="body2" color="textSecondary">
-              Observe how momentum is transferred through the balls. Drag the balls to start an oscillation.
-            </Typography>
+            <Box 
+              ref={sceneRef} 
+              sx={{
+                display: 'flex',
+                justifyContent: 'center',
+                overflow: 'hidden'
+              }}
+            />
+          </Card>
+        </Grid>
 
-            {/* Time Spent */}
-            <Box mt={3}>
-              <Typography variant="body1" fontWeight="bold">
-                Time Spent: {timeSpent} seconds
+        {/* Controls & Info Section - Full width on mobile, stacked below */}
+        <Grid item xs={12} md={4}>
+          <Card sx={{ p: isMobile ? 2 : 3, boxShadow: 3 }}>
+            <CardContent>
+              <Typography 
+                variant="h6" 
+                color="primary" 
+                gutterBottom
+                sx={{ fontSize: isMobile ? '1rem' : '1.25rem' }}
+              >
+                📜 Instructions
               </Typography>
-            </Box>
+              <Typography 
+                variant="body2" 
+                color="textSecondary"
+                sx={{ fontSize: isMobile ? '0.875rem' : '0.875rem' }}
+              >
+                Observe how momentum is transferred through the balls. Drag the balls to start an oscillation and watch the conservation of energy in action!
+              </Typography>
 
-            {/* End Experiment Button */}
-            <Box mt={3}>
-              <EndExperimentButton
-                experimentName={experimentName}
-                timeSpent={timeSpent}
-                route="/torque"
-                track="physics"
-                onEnd={handleMarkComplete}
-              />
-            </Box>
-          </CardContent>
-        </Card>
+              {/* Physics Explanation */}
+              <Box mt={isMobile ? 2 : 3}>
+                <Typography 
+                  variant="body2" 
+                  color="textSecondary"
+                  sx={{ fontSize: isMobile ? '0.8rem' : '0.875rem' }}
+                >
+                  💡 <strong>Physics Concept:</strong> When one ball hits the others, momentum and energy transfer through the stationary balls, causing the ball on the opposite end to swing out with nearly the same velocity.
+                </Typography>
+              </Box>
+
+              {/* Interactive Tips */}
+              <Box mt={isMobile ? 2 : 3}>
+                <Typography 
+                  variant="body2" 
+                  color="primary"
+                  sx={{ 
+                    fontSize: isMobile ? '0.8rem' : '0.875rem',
+                    fontStyle: 'italic'
+                  }}
+                >
+                  🖱️ <strong>Try this:</strong> Drag multiple balls and release them simultaneously to see different effects!
+                </Typography>
+              </Box>
+
+              {/* Time Spent */}
+              <Box mt={isMobile ? 2 : 3}>
+                <Typography 
+                  variant="body1" 
+                  fontWeight="bold"
+                  sx={{ fontSize: isMobile ? '0.875rem' : '1rem' }}
+                >
+                  ⏳ Time Spent: {timeSpent} seconds
+                </Typography>
+              </Box>
+
+              {/* End Experiment Button */}
+              <Box mt={isMobile ? 2 : 3}>
+                <EndExperimentButton
+                  experimentName={experimentName}
+                  timeSpent={timeSpent}
+                  route="/newton-cradle"
+                  track="physics"
+                  onEnd={handleMarkComplete}
+                />
+              </Box>
+            </CardContent>
+          </Card>
+        </Grid>
       </Grid>
-    </Grid>
+    </Box>
   );
 };
 
